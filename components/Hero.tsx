@@ -1,0 +1,180 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { Phone, ArrowDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+export default function Hero() {
+  const [particles, setParticles] = useState<Array<{left: number, top: number, duration: number, delay: number}>>([]);
+
+  useEffect(() => {
+    setParticles(
+      [...Array(20)].map(() => ({
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        duration: 3 + Math.random() * 2,
+        delay: Math.random() * 2,
+      }))
+    );
+  }, []);
+
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-patriot-darkNavy via-patriot-navy to-patriot-blue">
+      {/* Animated background particles */}
+      <div className="absolute inset-0">
+        {particles.map((particle, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-phoenix-coral rounded-full"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+            }}
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              y: [0, -200],
+              opacity: [0, 0.6, 0],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center">
+          {/* Phoenix Logo Animation */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{
+              duration: 1.2,
+              ease: [0.6, 0.05, 0.01, 0.9],
+              type: "spring",
+              stiffness: 100
+            }}
+            className="mb-12 inline-block"
+          >
+            <div className="relative">
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 blur-3xl opacity-50"
+                style={{
+                  background: 'radial-gradient(ellipse at center, rgba(212, 165, 116, 0.5) 0%, rgba(255, 140, 105, 0.6) 30%, rgba(255, 107, 69, 0.5) 50%, rgba(255, 87, 51, 0.4) 70%, rgba(139, 35, 50, 0.3) 100%)'
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.7, 0.5]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+
+              {/* Phoenix Text */}
+              <div className="relative">
+                <h1 className="text-8xl md:text-9xl font-bold bg-phoenix-gradient bg-clip-text text-transparent phoenix-glow mb-4">
+                  PATRIOT
+                </h1>
+                <div className="flex items-center justify-center gap-4">
+                  <motion.div
+                    className="h-1 flex-1 bg-phoenix-gradient"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                  />
+                  <p className="text-2xl md:text-3xl text-desert-tan tracking-[0.3em]">PHOENIX</p>
+                  <motion.div
+                    className="h-1 flex-1 bg-phoenix-gradient"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Tagline */}
+          <motion.p
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="text-2xl md:text-4xl text-desert-tan mb-8 font-light"
+          >
+            Rising Above in <span className="bg-phoenix-gradient bg-clip-text text-transparent font-bold">Waste Management</span>
+          </motion.p>
+
+          <motion.p
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+            className="text-lg md:text-xl text-desert-sand mb-12 max-w-2xl mx-auto"
+          >
+            Premium disposal services delivered with honor, reliability, and unmatched dedication
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          >
+            <motion.a
+              href="tel:480-851-2000"
+              className="group relative px-10 py-5 bg-phoenix-gradient text-white text-xl font-bold rounded-lg overflow-hidden desert-glow"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div
+                className="absolute inset-0 bg-white"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '100%' }}
+                transition={{ duration: 0.5 }}
+                style={{ opacity: 0.2 }}
+              />
+              <span className="relative flex items-center gap-3">
+                <Phone className="w-6 h-6" />
+                480-851-2000
+              </span>
+            </motion.a>
+
+            <motion.a
+              href="#quote"
+              className="px-10 py-5 border-2 border-phoenix-coral text-desert-tan text-xl font-bold rounded-lg hover:bg-phoenix-coral/10 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Get a Quote
+            </motion.a>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="text-desert-sand"
+            >
+              <ArrowDown className="w-8 h-8" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}

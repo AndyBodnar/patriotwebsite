@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --desert-tan: #E8DCC4;
+  --desert-sand: #D4C5A9;
+  --phoenix-gold: #D4A574;
+  --phoenix-coral: #FF8C69;
+  --phoenix-orange: #FF6B45;
+  --phoenix-flame: #FF5733;
+  --phoenix-maroon: #8B2332;
+  --patriot-navy: #1A2B4A;
+  --patriot-dark-navy: #0F1A2E;
+  --patriot-blue: #2C4875;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--patriot-dark-navy);
+  color: var(--desert-tan);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.phoenix-glow {
+  text-shadow: 0 0 20px rgba(212, 165, 116, 0.4),
+               0 0 40px rgba(255, 140, 105, 0.5),
+               0 0 60px rgba(255, 107, 69, 0.4),
+               0 0 80px rgba(255, 87, 51, 0.3),
+               0 0 100px rgba(139, 35, 50, 0.2);
+}
+
+.desert-glow {
+  box-shadow: 0 0 30px rgba(255, 140, 105, 0.3),
+              0 0 60px rgba(255, 107, 69, 0.2);
+}
+
+@keyframes phoenixRise {
+  0% {
+    transform: translateY(100px) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes flameFlicker {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
+}
+
+.animate-phoenix-rise {
+  animation: phoenixRise 1.5s ease-out;
+}
+
+.animate-flame-flicker {
+  animation: flameFlicker 2s ease-in-out infinite;
+}
