@@ -19,7 +19,7 @@ export default function PrivacyPage() {
           <h2 className="text-4xl font-bold text-white mb-4">Privacy & Compliance Center</h2>
           <p className="text-white text-xl mb-6">Coming Soon</p>
           <p className="text-white/90 max-w-2xl mx-auto">
-            We're building a comprehensive privacy management system with GDPR/CCPA compliance tools,
+            We&apos;re building a comprehensive privacy management system with GDPR/CCPA compliance tools,
             cookie consent management, data deletion requests, and audit logs.
           </p>
         </div>

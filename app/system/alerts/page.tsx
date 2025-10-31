@@ -131,7 +131,7 @@ export default function AlertsPage() {
 
           <div className="bg-patriot-navy border-2 border-yellow-500/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-desert-sand text-sm">Today's Alerts</p>
+              <p className="text-desert-sand text-sm">Today&apos;s Alerts</p>
               <AlertTriangle className="w-5 h-5 text-yellow-400" />
             </div>
             <p className="text-4xl font-bold text-yellow-400">27</p>

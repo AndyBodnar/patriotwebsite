@@ -192,7 +192,7 @@ export default function CompetitivePage() {
                 </div>
                 <div className="bg-patriot-navy rounded p-2 mt-2">
                   <p className="text-desert-sand text-sm">
-                    <span className="text-red-300 font-bold">💡 Action:</span> Create content targeting this keyword - competitors are ranking but you're not. High traffic potential with manageable difficulty.
+                    <span className="text-red-300 font-bold">💡 Action:</span> Create content targeting this keyword - competitors are ranking but you&apos;re not. High traffic potential with manageable difficulty.
                   </p>
                 </div>
               </div>
