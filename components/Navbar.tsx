@@ -1,9 +1,10 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Phone, Menu, X } from 'lucide-react';
+import { Phone, Menu, X, Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,6 +90,19 @@ export default function Navbar() {
               <Phone className="w-4 h-4" />
               480-851-2000
             </motion.a>
+            <Link href="/system">
+              <motion.button
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-6 py-2 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg hover:bg-phoenix-coral hover:text-white transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                System
+              </motion.button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -124,6 +138,12 @@ export default function Navbar() {
               <Phone className="w-4 h-4" />
               480-851-2000
             </a>
+            <Link href="/system" onClick={() => setIsOpen(false)}>
+              <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg">
+                <Settings className="w-4 h-4" />
+                System
+              </button>
+            </Link>
           </div>
         </motion.div>
       </div>
