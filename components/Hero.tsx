@@ -62,23 +62,6 @@ export default function Hero() {
             className="mb-12 inline-block"
           >
             <div className="relative">
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 blur-3xl opacity-50"
-                style={{
-                  background: 'radial-gradient(ellipse at center, rgba(212, 165, 116, 0.5) 0%, rgba(255, 140, 105, 0.6) 30%, rgba(255, 107, 69, 0.5) 50%, rgba(255, 87, 51, 0.4) 70%, rgba(139, 35, 50, 0.3) 100%)'
-                }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.7, 0.5]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-
               {/* Phoenix Text */}
               <div className="relative">
                 <h1 className="text-8xl md:text-9xl font-bold bg-phoenix-gradient bg-clip-text text-transparent phoenix-glow mb-4">
@@ -150,7 +133,7 @@ export default function Hero() {
 
             <motion.a
               href="#quote"
-              className="px-10 py-5 border-2 border-phoenix-coral text-desert-tan text-xl font-bold rounded-lg hover:bg-phoenix-coral/10 transition-colors"
+              className="px-10 py-5 border-2 border-phoenix-coral text-desert-tan text-xl font-bold rounded-lg hover:bg-phoenix-coral hover:text-white transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

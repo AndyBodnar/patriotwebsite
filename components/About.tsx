@@ -57,20 +57,6 @@ export default function About() {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative"
             >
-              {/* Glow effect behind logo */}
-              <motion.div
-                className="absolute inset-0 blur-3xl bg-phoenix-gradient opacity-30"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-
               {/* Logo */}
               <motion.div
                 className="relative w-[400px] h-[400px]"
@@ -125,9 +111,9 @@ export default function About() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    className="flex items-start gap-3 bg-patriot-darkNavy/50 backdrop-blur-sm border border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-lg p-4"
+                    className="flex items-start gap-3 bg-patriot-darkNavy border border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-lg p-4"
                   >
-                    <div className="w-10 h-10 bg-patriot-blue/50 border border-desert-tan rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-patriot-blue border border-desert-tan rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon className="w-5 h-5 text-phoenix-coral" strokeWidth={2.5} />
                     </div>
                     <div>
