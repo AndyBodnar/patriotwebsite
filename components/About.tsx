@@ -34,13 +34,7 @@ export default function About() {
 
   return (
     <section id="about" ref={ref} className="py-24 bg-patriot-navy relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `linear-gradient(30deg, rgba(255, 140, 105, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 140, 105, 0.1) 87.5%, rgba(255, 140, 105, 0.1)), linear-gradient(150deg, rgba(255, 140, 105, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 140, 105, 0.1) 87.5%, rgba(255, 140, 105, 0.1))`,
-          backgroundSize: '80px 140px'
-        }} />
-      </div>
+      {/* Background pattern - removed for sharp rendering */}
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -57,20 +51,6 @@ export default function About() {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative"
             >
-              {/* Glow effect behind logo */}
-              <motion.div
-                className="absolute inset-0 blur-3xl bg-phoenix-gradient opacity-30"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-
               {/* Logo */}
               <motion.div
                 className="relative w-[400px] h-[400px]"
@@ -125,9 +105,9 @@ export default function About() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                    className="flex items-start gap-3 bg-patriot-darkNavy/50 backdrop-blur-sm border border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-lg p-4"
+                    className="flex items-start gap-3 bg-patriot-darkNavy border border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-lg p-4"
                   >
-                    <div className="w-10 h-10 bg-patriot-blue/50 border border-desert-tan rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-patriot-blue border border-desert-tan rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon className="w-5 h-5 text-phoenix-coral" strokeWidth={2.5} />
                     </div>
                     <div>

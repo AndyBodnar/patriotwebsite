@@ -13,7 +13,7 @@ export default function Navbar() {
   const backgroundColor = useTransform(
     scrollY,
     [0, 100],
-    ['rgba(15, 26, 46, 0)', 'rgba(15, 26, 46, 0.95)']
+    ['rgb(15, 26, 46)', 'rgb(15, 26, 46)']
   );
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Navbar() {
     <motion.nav
       style={{ backgroundColor }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'backdrop-blur-lg border-b border-phoenix-coral/20' : ''
+        scrolled ? 'border-b border-phoenix-coral' : ''
       }`}
     >
       <div className="container mx-auto px-6 py-4">

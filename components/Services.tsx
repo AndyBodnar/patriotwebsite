@@ -49,13 +49,7 @@ export default function Services() {
 
   return (
     <section ref={ref} className="py-24 bg-gradient-to-b from-patriot-blue via-patriot-navy to-patriot-darkNavy relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgb(255, 140, 105) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+      {/* Background pattern - removed for sharp rendering */}
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
@@ -90,15 +84,14 @@ export default function Services() {
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                 className="group relative"
               >
-                <div className="relative bg-patriot-darkNavy/80 backdrop-blur-sm border-2 border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-xl p-8 h-full">
+                <div className="relative bg-patriot-darkNavy border-2 border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-xl p-8 h-full">
                   {/* Icon with glow effect */}
                   <motion.div
                     className="relative mb-6"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <div className="absolute inset-0 blur-xl bg-phoenix-gradient opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-                    <div className="relative w-20 h-20 bg-patriot-blue/50 border-2 border-desert-tan group-hover:border-phoenix-coral rounded-lg flex items-center justify-center transition-all duration-300">
+                    <div className="relative w-20 h-20 bg-patriot-blue border-2 border-desert-tan group-hover:border-phoenix-coral rounded-lg flex items-center justify-center transition-all duration-300">
                       <Icon className="w-10 h-10 text-desert-tan group-hover:text-phoenix-coral transition-colors duration-300" strokeWidth={2.5} />
                     </div>
                   </motion.div>
@@ -125,10 +118,7 @@ export default function Services() {
                     ))}
                   </ul>
 
-                  {/* Hover gradient border effect */}
-                  <motion.div
-                    className="absolute inset-0 rounded-xl bg-phoenix-gradient opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
-                  />
+                  {/* Hover effect removed for sharp rendering */}
                 </div>
               </motion.div>
             );

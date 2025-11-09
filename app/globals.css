@@ -27,22 +27,22 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: geometricPrecision;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   overflow-x: hidden;
 }
 
 .phoenix-glow {
-  text-shadow: 0 0 20px rgba(212, 165, 116, 0.4),
-               0 0 40px rgba(255, 140, 105, 0.5),
-               0 0 60px rgba(255, 107, 69, 0.4),
-               0 0 80px rgba(255, 87, 51, 0.3),
-               0 0 100px rgba(139, 35, 50, 0.2);
+  /* Removed glow effects for crystal-sharp rendering */
+  text-shadow: none;
 }
 
 .desert-glow {
-  box-shadow: 0 0 30px rgba(255, 140, 105, 0.3),
-              0 0 60px rgba(255, 107, 69, 0.2);
+  /* Removed glow effects for crystal-sharp rendering */
+  box-shadow: none;
 }
 
 @keyframes phoenixRise {
@@ -59,11 +59,9 @@ body {
 @keyframes flameFlicker {
   0%, 100% {
     opacity: 1;
-    filter: brightness(1);
   }
   50% {
-    opacity: 0.8;
-    filter: brightness(1.2);
+    opacity: 0.95;
   }
 }
 
@@ -73,4 +71,25 @@ body {
 
 .animate-flame-flicker {
   animation: flameFlicker 2s ease-in-out infinite;
+}
+
+/* Crystal-sharp SVG and icon rendering */
+svg {
+  shape-rendering: geometricPrecision;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Sharp image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Remove any transforms that might cause blur */
+* {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }

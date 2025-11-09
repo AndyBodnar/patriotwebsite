@@ -158,7 +158,7 @@ export default function Contact() {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.6 }}
-              className="bg-patriot-blue/30 border-2 border-phoenix-coral/30 rounded-xl p-6"
+              className="bg-patriot-blue border-2 border-phoenix-coral rounded-xl p-6"
             >
               <h4 className="text-xl font-bold text-desert-tan mb-3">Why Choose Patriot?</h4>
               <ul className="space-y-2 text-desert-sand">
@@ -188,7 +188,7 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="bg-patriot-darkNavy/60 backdrop-blur-sm border-2 border-patriot-blue rounded-xl p-8">
+            <form onSubmit={handleSubmit} className="bg-patriot-darkNavy border-2 border-patriot-blue rounded-xl p-8">
               <h3 className="text-2xl font-bold text-desert-tan mb-6">Request a Quote</h3>
 
               <div className="space-y-4">
@@ -199,7 +199,7 @@ export default function Contact() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-patriot-navy/50 border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-patriot-navy border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
                     placeholder="Your name"
                   />
                 </div>
@@ -211,7 +211,7 @@ export default function Contact() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-patriot-navy/50 border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-patriot-navy border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -223,7 +223,7 @@ export default function Contact() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-patriot-navy/50 border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-patriot-navy border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
                     placeholder="(480) 555-0123"
                   />
                 </div>
@@ -234,7 +234,7 @@ export default function Contact() {
                     required
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-4 py-3 bg-patriot-navy/50 border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-patriot-navy border-2 border-patriot-blue focus:border-phoenix-coral rounded-lg text-desert-tan outline-none transition-colors"
                   >
                     <option value="">Select a service</option>
                     <option value="residential">Residential</option>
