@@ -34,13 +34,7 @@ export default function About() {
 
   return (
     <section id="about" ref={ref} className="py-24 bg-patriot-navy relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `linear-gradient(30deg, rgba(255, 140, 105, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 140, 105, 0.1) 87.5%, rgba(255, 140, 105, 0.1)), linear-gradient(150deg, rgba(255, 140, 105, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 140, 105, 0.1) 87.5%, rgba(255, 140, 105, 0.1))`,
-          backgroundSize: '80px 140px'
-        }} />
-      </div>
+      {/* Background pattern - removed for sharp rendering */}
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

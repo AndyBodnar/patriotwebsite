@@ -36,7 +36,7 @@ export default function Hero() {
             }}
             animate={{
               y: [0, -200],
-              opacity: [0, 0.6, 0],
+              opacity: [0, 1, 0],
             }}
             transition={{
               duration: particle.duration,
@@ -118,13 +118,7 @@ export default function Hero() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <motion.div
-                className="absolute inset-0 bg-white"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: '100%' }}
-                transition={{ duration: 0.5 }}
-                style={{ opacity: 0.2 }}
-              />
+              {/* Removed semi-transparent overlay for sharp rendering */}
               <span className="relative flex items-center gap-3">
                 <Phone className="w-6 h-6" />
                 480-851-2000
