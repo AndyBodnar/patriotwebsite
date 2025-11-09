@@ -4,12 +4,17 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Phone, Menu, X, Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from './LoginModal';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const { scrollY } = useScroll();
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const backgroundColor = useTransform(
     scrollY,
     [0, 100],
@@ -29,6 +34,18 @@ export default function Navbar() {
     { name: 'About', href: '#about' },
     { name: 'Quote', href: '#quote' },
   ];
+
+  const handleSystemClick = () => {
+    if (isAuthenticated) {
+      router.push('/system');
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    router.push('/system');
+  };
 
   return (
     <motion.nav
@@ -90,19 +107,18 @@ export default function Navbar() {
               <Phone className="w-4 h-4" />
               480-851-2000
             </motion.a>
-            <Link href="/system">
-              <motion.button
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-6 py-2 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg hover:bg-phoenix-coral hover:text-white transition-colors"
-              >
-                <Settings className="w-4 h-4" />
-                System
-              </motion.button>
-            </Link>
+            <motion.button
+              onClick={handleSystemClick}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-6 py-2 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg hover:bg-phoenix-coral hover:text-white transition-colors"
+            >
+              <Settings className="w-4 h-4" />
+              System
+            </motion.button>
           </div>
 
           {/* Mobile menu button */}
@@ -138,15 +154,26 @@ export default function Navbar() {
               <Phone className="w-4 h-4" />
               480-851-2000
             </a>
-            <Link href="/system" onClick={() => setIsOpen(false)}>
-              <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg">
-                <Settings className="w-4 h-4" />
-                System
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                handleSystemClick();
+                setIsOpen(false);
+              }}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral font-bold rounded-lg"
+            >
+              <Settings className="w-4 h-4" />
+              System
+            </button>
           </div>
         </motion.div>
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </motion.nav>
   );
 }

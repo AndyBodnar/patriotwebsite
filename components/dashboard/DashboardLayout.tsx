@@ -2,7 +2,8 @@
 
 import { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   LayoutDashboard,
   Users,
@@ -15,7 +16,8 @@ import {
   Bell,
   Shield,
   Menu,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -37,7 +39,14 @@ const navigation = [
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-patriot-darkNavy">
@@ -117,6 +126,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">
                   3
                 </span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-desert-tan hover:text-phoenix-coral transition-colors"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="hidden md:inline">Logout</span>
               </button>
             </div>
           </div>

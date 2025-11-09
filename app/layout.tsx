@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Patriot Disposal Phoenix | Premium Waste Management Services",
@@ -14,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <AuthProvider>
+          <Analytics />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

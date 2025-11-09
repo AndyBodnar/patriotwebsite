@@ -1,0 +1,136 @@
+// Prisma schema for Patriot Disposal Analytics
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Visitor {
+  id              String     @id @default(uuid())
+  sessionId       String
+  ipAddress       String
+  userAgent       String?
+  device          String?
+  browser         String?
+  os              String?
+
+  // Location
+  city            String?
+  state           String?
+  country         String?
+  latitude        Float?
+  longitude       Float?
+
+  // Company Detection (for spy mode)
+  companyName     String?
+  companyDomain   String?
+  isCompetitor    Boolean    @default(false)
+
+  // Security Flags
+  isVpn           Boolean    @default(false)
+  isProxy         Boolean    @default(false)
+  fraudScore      Int?
+
+  // Fingerprinting
+  fingerprint     String?
+
+  // Referrer
+  referrer        String?
+  referrerDomain  String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+
+  // Timestamps
+  firstSeen       DateTime   @default(now())
+  lastSeen        DateTime   @updatedAt
+
+  // Relations
+  pageViews       PageView[]
+  events          Event[]
+
+  @@index([ipAddress])
+  @@index([sessionId])
+  @@index([companyName])
+  @@index([isCompetitor])
+  @@index([firstSeen])
+}
+
+model PageView {
+  id          String    @id @default(uuid())
+  visitorId   String
+  visitor     Visitor   @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  // Page info
+  path        String
+  title       String?
+
+  // Timing
+  duration    Int?      // seconds on page
+  timestamp   DateTime  @default(now())
+
+  @@index([visitorId])
+  @@index([path])
+  @@index([timestamp])
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  visitorId   String
+  visitor     Visitor   @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  // Event details
+  eventType   String    // 'click', 'scroll', 'form_submit', 'download', etc.
+  eventData   Json?
+
+  timestamp   DateTime  @default(now())
+
+  @@index([visitorId])
+  @@index([eventType])
+  @@index([timestamp])
+}
+
+model CompetitorIP {
+  id            String   @id @default(uuid())
+  ipRange       String   @unique // CIDR notation like "192.0.2.0/24"
+  companyName   String
+  domain        String?
+  threatLevel   String   @default("medium") // low, medium, high
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([companyName])
+}
+
+model AnalyticsSummary {
+  id              String   @id @default(uuid())
+  date            DateTime @unique @default(now())
+
+  // Daily metrics
+  totalVisitors   Int      @default(0)
+  totalPageViews  Int      @default(0)
+  avgDuration     Float?
+  bounceRate      Float?
+
+  // Traffic sources
+  organicCount    Int      @default(0)
+  directCount     Int      @default(0)
+  referralCount   Int      @default(0)
+  socialCount     Int      @default(0)
+
+  // Devices
+  mobileCount     Int      @default(0)
+  desktopCount    Int      @default(0)
+  tabletCount     Int      @default(0)
+
+  // Competitor tracking
+  competitorVisits Int     @default(0)
+  vpnDetections    Int     @default(0)
+
+  @@index([date])
+}
