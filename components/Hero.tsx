@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, ArrowDown } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -20,7 +20,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-patriot-darkNavy via-patriot-navy to-patriot-blue">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-patriot-darkNavy via-patriot-navy to-patriot-blue pt-20">
       {/* Animated background particles */}
       <div className="absolute inset-0">
         {particles.map((particle, i) => (
@@ -133,22 +133,6 @@ export default function Hero() {
             >
               Get a Quote
             </motion.a>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
-            className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="text-desert-sand"
-            >
-              <ArrowDown className="w-8 h-8" />
-            </motion.div>
           </motion.div>
         </div>
       </div>

@@ -148,7 +148,7 @@ export default function Contact() {
                   <div>
                     <p className="text-desert-sand text-sm">Email Us</p>
                     <p className="text-xl font-bold text-desert-tan group-hover:text-phoenix-coral transition-colors">
-                      info@patriotdisposal.com
+                      info@pdphx.com
                     </p>
                   </div>
                 </motion.div>

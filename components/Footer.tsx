@@ -61,7 +61,6 @@ export default function Footer() {
               <li><a href="#" className="hover:text-phoenix-coral transition-colors">Construction</a></li>
               <li><a href="#" className="hover:text-phoenix-coral transition-colors">Recycling</a></li>
               <li><a href="#" className="hover:text-phoenix-coral transition-colors">Roll-Off Dumpsters</a></li>
-              <li><a href="#" className="hover:text-phoenix-coral transition-colors">Junk Removal</a></li>
             </ul>
           </div>
 
@@ -89,8 +88,8 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="w-5 h-5 text-phoenix-coral flex-shrink-0 mt-0.5" />
-                <a href="mailto:info@patriotdisposal.com" className="hover:text-phoenix-coral transition-colors">
-                  info@patriotdisposal.com
+                <a href="mailto:info@pdphx.com" className="hover:text-phoenix-coral transition-colors">
+                  info@pdphx.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
