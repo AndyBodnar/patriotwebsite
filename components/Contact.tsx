@@ -297,7 +297,7 @@ export default function Contact() {
                   <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center">
                     <CheckCircle className="w-8 h-8 mx-auto mb-2" />
                     <p className="font-bold">Thank you!</p>
-                    <p className="text-sm">We've received your request and will contact you soon.</p>
+                    <p className="text-sm">We&apos;ve received your request and will contact you soon.</p>
                   </div>
                 ) : (
                   <motion.button

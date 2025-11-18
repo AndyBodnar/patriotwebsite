@@ -70,7 +70,7 @@ export default function ServiceConnection({
 
       {/* Features List */}
       <div className="bg-patriot-navy rounded-lg p-4 mb-6 text-left max-w-sm mx-auto">
-        <p className="text-desert-sand text-xs font-bold mb-3 uppercase tracking-wider">What you'll get:</p>
+        <p className="text-desert-sand text-xs font-bold mb-3 uppercase tracking-wider">What you&apos;ll get:</p>
         <ul className="space-y-2">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start gap-2 text-sm">

@@ -179,7 +179,7 @@ export default function BlogPostPage() {
         <div className="pt-32 pb-24">
           <div className="container mx-auto px-6 text-center">
             <h1 className="text-4xl font-bold text-desert-tan mb-4">Post Not Found</h1>
-            <p className="text-desert-sand mb-8">The blog post you're looking for doesn't exist.</p>
+            <p className="text-desert-sand mb-8">The blog post you&apos;re looking for doesn&apos;t exist.</p>
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 px-6 py-3 bg-phoenix-gradient text-white font-bold rounded-lg"
