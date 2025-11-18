@@ -112,6 +112,19 @@ export default function Footer() {
               <a href="#" className="hover:text-phoenix-coral transition-colors">Terms of Service</a>
             </div>
           </div>
+          <div className="text-center mt-6">
+            <p className="text-desert-sand/60 text-xs">
+              Site designed and maintained by{' '}
+              <a
+                href="https://azdevops.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-phoenix-coral hover:text-phoenix-orange transition-colors"
+              >
+                DevCollective
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

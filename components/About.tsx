@@ -8,23 +8,23 @@ import Image from 'next/image';
 const features = [
   {
     icon: Shield,
-    title: 'Reliable Service',
-    description: 'Dependable pickup schedules you can count on'
+    title: 'Veteran Owned',
+    description: 'Built on integrity, reliability, and accountability'
   },
   {
     icon: Award,
     title: 'Locally Owned',
-    description: 'Phoenix-based and community-focused'
+    description: 'Phoenix based, Valley wide since 2022'
   },
   {
     icon: Users,
-    title: 'Expert Team',
-    description: 'Professional staff dedicated to excellence'
+    title: 'Real People',
+    description: 'Actual Arizonans who pick up and handle it'
   },
   {
     icon: Zap,
-    title: 'Fast Response',
-    description: 'Same-day service available'
+    title: 'Valley Wide',
+    description: 'Same great service everywhere we go'
   }
 ];
 
@@ -84,15 +84,32 @@ export default function About() {
               Rising Above <span className="bg-phoenix-gradient bg-clip-text text-transparent">The Rest</span>
             </h2>
 
-            <p className="text-xl text-desert-sand mb-6 leading-relaxed">
-              At Patriot Disposal Phoenix, we believe in serving our community with honor, integrity, and dedication.
-              Like the phoenix rising from the ashes, we transform your waste management challenges into seamless solutions.
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              At Patriot Disposal Phoenix, we believe in serving our community with honor, integrity, and dedication. Like the phoenix rising from the ashes, we turn waste management challenges into smooth, dependable solutions you do not have to think twice about. As a locally owned and operated company, we understand the unique needs of the Phoenix metro area, and we use that knowledge to deliver service you can rely on every time.
             </p>
 
-            <p className="text-lg text-desert-sand mb-8 leading-relaxed">
-              As a locally owned and operated company, we understand the unique needs of the Phoenix metro area.
-              Our commitment to excellence and customer satisfaction has made us the trusted choice for residential,
-              commercial, and construction disposal services.
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              Patriot Disposal was established in 2022 with a simple mission: bring real, reliable waste and recycling services back to Phoenix and the entire Valley without the corporate nonsense. We are a locally owned and veteran owned company built by people who actually live here and take pride in serving the neighborhoods and surrounding communities all across the Valley.
+            </p>
+
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              Phoenix is our home base, but we proudly serve residential, commercial, and construction customers everywhere in the Valley from the heart of the city to the outer growing areas. No matter where you are, you get the same consistency, the same dependability, and the same real human customer service.
+            </p>
+
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              And that is one of our biggest strengths. You talk to real local people. Not phone trees. Not outsourced call centers. Not endless hold music. Just actual Arizonans who pick up, understand your area, and handle your request right away.
+            </p>
+
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              Our veteran roots drive everything we do: integrity, reliability, accountability, and respect. We show up when we say we will. We keep our pricing fair and transparent. And we treat every customer like a neighbor, because to us, you are one.
+            </p>
+
+            <p className="text-lg text-desert-sand mb-4 leading-relaxed">
+              Patriot Disposal is proud to be Phoenix based, Valley wide, and built on service you can trust.
+            </p>
+
+            <p className="text-lg text-desert-sand mb-8 leading-relaxed font-bold">
+              Patriot Disposal. Locally owned. Veteran proud. Valley strong.
             </p>
 
             {/* Features Grid */}

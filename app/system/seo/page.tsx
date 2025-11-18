@@ -2,206 +2,251 @@
 
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import DashboardCard from '@/components/dashboard/DashboardCard';
-import MetricCard from '@/components/dashboard/MetricCard';
-import { TrendingUp, TrendingDown, Search, Link as LinkIcon, Zap, Award, ArrowUp, ArrowDown, Minus } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-const rankingData = [
-  { date: '10/20', avgRank: 15.2 },
-  { date: '10/22', avgRank: 14.8 },
-  { date: '10/24', avgRank: 13.5 },
-  { date: '10/26', avgRank: 12.9 },
-  { date: '10/28', avgRank: 11.4 },
-  { date: '10/30', avgRank: 10.2 },
-];
-
-const keywords = [
-  { keyword: 'dumpster rental phoenix', position: 3, change: 2, volume: 8100, difficulty: 65, traffic: 2430 },
-  { keyword: 'waste management phoenix az', position: 7, change: -1, volume: 5400, difficulty: 72, traffic: 810 },
-  { keyword: 'commercial dumpster rental', position: 12, change: 5, volume: 3600, difficulty: 58, traffic: 180 },
-  { keyword: 'roll off dumpster phoenix', position: 5, change: 0, volume: 2900, difficulty: 61, traffic: 870 },
-  { keyword: 'construction waste removal', position: 15, change: 3, volume: 2200, difficulty: 54, traffic: 110 },
-  { keyword: 'junk removal phoenix', position: 9, change: -2, volume: 4800, difficulty: 69, traffic: 480 },
-  { keyword: 'residential dumpster rental', position: 18, change: 7, volume: 1800, difficulty: 52, traffic: 54 },
-  { keyword: 'debris removal service', position: 22, change: 1, volume: 1500, difficulty: 48, traffic: 30 },
-];
-
-const backlinks = [
-  { domain: 'buildermagazine.com', authority: 78, type: 'Dofollow', status: 'Active', date: '10/28' },
-  { domain: 'phoenixbusiness.org', authority: 65, type: 'Dofollow', status: 'Active', date: '10/25' },
-  { domain: 'constructiontoday.net', authority: 72, type: 'Dofollow', status: 'Active', date: '10/22' },
-  { domain: 'localbusiness-az.com', authority: 45, type: 'Dofollow', status: 'Active', date: '10/20' },
-  { domain: 'wastemanagement-news.com', authority: 58, type: 'Nofollow', status: 'Active', date: '10/18' },
-];
-
-const coreWebVitals = [
-  { metric: 'LCP (Largest Contentful Paint)', mobile: 1.8, desktop: 0.9, status: 'good' },
-  { metric: 'FID (First Input Delay)', mobile: 45, desktop: 15, status: 'good' },
-  { metric: 'CLS (Cumulative Layout Shift)', mobile: 0.05, desktop: 0.02, status: 'good' },
-  { metric: 'Page Speed Score', mobile: 92, desktop: 98, status: 'good' },
-];
+import ServiceConnection, { ChartEmptyState, MultiServiceConnection } from '@/components/dashboard/ServiceConnection';
+import { useConnectionStatus, useAPIConnections } from '@/contexts/APIConnectionsContext';
+import {
+  TrendingUp, Search, Link as LinkIcon, Award, Zap, Globe, BarChart3,
+  Activity, MapPin, Star, FileSearch, Eye, ArrowUpRight
+} from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useRouter } from 'next/navigation';
 
 export default function SEOPage() {
+  const router = useRouter();
+  const connections = useConnectionStatus();
+  const { connections: fullConnections } = useAPIConnections();
+
+  const handleConnect = (service: string) => {
+    router.push('/system/settings');
+  };
+
+  const connectedCount = Object.values(connections).filter(Boolean).length;
+  const totalServices = 7; // SEO services count
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-desert-tan mb-2">SEO Performance</h1>
-          <p className="text-desert-sand">Keyword rankings, backlinks, and technical SEO health</p>
-        </div>
-
-        {/* Key SEO Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <MetricCard
-            title="Avg Keyword Position"
-            value="10.2"
-            change={-15.3}
-            icon={<TrendingUp className="w-5 h-5" />}
-          />
-          <MetricCard
-            title="Total Backlinks"
-            value="1,247"
-            change={8.7}
-            icon={<LinkIcon className="w-5 h-5" />}
-          />
-          <MetricCard
-            title="Domain Authority"
-            value="52"
-            change={3.2}
-            icon={<Award className="w-5 h-5" />}
-          />
-          <MetricCard
-            title="Organic Traffic"
-            value="12.4K"
-            change={18.9}
-            icon={<Search className="w-5 h-5" />}
-          />
-        </div>
-
-        {/* Ranking Trend */}
-        <DashboardCard title="Average Ranking Trend">
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={rankingData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1A2B4A" />
-              <XAxis dataKey="date" stroke="#E8DCC4" />
-              <YAxis reversed stroke="#E8DCC4" label={{ value: 'Position', angle: -90, position: 'insideLeft', fill: '#E8DCC4' }} />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#1A2B4A', border: '2px solid #FF8C69', borderRadius: '8px' }}
-                labelStyle={{ color: '#E8DCC4' }}
-              />
-              <Line type="monotone" dataKey="avgRank" stroke="#D4A574" strokeWidth={3} dot={{ fill: '#D4A574', r: 6 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </DashboardCard>
-
-        {/* Keyword Rankings */}
-        <DashboardCard title="Keyword Rankings">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-phoenix-coral/20">
-                  <th className="text-left py-3 px-4 text-desert-sand font-bold">Keyword</th>
-                  <th className="text-center py-3 px-4 text-desert-sand font-bold">Position</th>
-                  <th className="text-center py-3 px-4 text-desert-sand font-bold">Change</th>
-                  <th className="text-right py-3 px-4 text-desert-sand font-bold">Volume</th>
-                  <th className="text-right py-3 px-4 text-desert-sand font-bold">Difficulty</th>
-                  <th className="text-right py-3 px-4 text-desert-sand font-bold">Est. Traffic</th>
-                </tr>
-              </thead>
-              <tbody>
-                {keywords.map((kw, index) => (
-                  <tr key={index} className="border-b border-phoenix-coral/10 hover:bg-patriot-blue/10 transition-colors">
-                    <td className="py-3 px-4 text-desert-tan font-medium">{kw.keyword}</td>
-                    <td className="py-3 px-4 text-center">
-                      <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full font-bold ${
-                        kw.position <= 3 ? 'bg-green-500/20 text-green-400' :
-                        kw.position <= 10 ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-gray-500/20 text-gray-400'
-                      }`}>
-                        {kw.position}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <div className={`inline-flex items-center gap-1 ${
-                        kw.change > 0 ? 'text-green-400' :
-                        kw.change < 0 ? 'text-red-400' :
-                        'text-gray-400'
-                      }`}>
-                        {kw.change > 0 && <ArrowUp className="w-4 h-4" />}
-                        {kw.change < 0 && <ArrowDown className="w-4 h-4" />}
-                        {kw.change === 0 && <Minus className="w-4 h-4" />}
-                        <span className="font-bold">{Math.abs(kw.change)}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-right text-desert-sand">{kw.volume.toLocaleString()}</td>
-                    <td className="py-3 px-4 text-right">
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${
-                        kw.difficulty <= 50 ? 'bg-green-500/20 text-green-400' :
-                        kw.difficulty <= 65 ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
-                        {kw.difficulty}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right text-phoenix-coral font-bold">{kw.traffic}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-desert-tan mb-2">SEO Performance</h1>
+            <p className="text-desert-sand">Keyword rankings, backlinks, and technical SEO health</p>
           </div>
+          <div className="text-right">
+            <p className="text-phoenix-coral font-bold text-2xl">{connectedCount}/{totalServices}</p>
+            <p className="text-desert-sand text-sm">Integrations Active</p>
+          </div>
+        </div>
+
+        {connectedCount === 0 && (
+          <div className="bg-gradient-to-r from-phoenix-coral/20 to-patriot-blue/20 border-2 border-phoenix-coral/50 rounded-lg p-8">
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 bg-phoenix-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                <Search className="w-8 h-8 text-white" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-desert-tan font-bold text-2xl mb-2">Connect Your SEO Tools</h3>
+                <p className="text-desert-sand mb-6 max-w-2xl">
+                  Unlock the full power of your SEO Command Center by connecting your analytics and SEO platforms.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button onClick={() => handleConnect('Google Search Console')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <Search className="w-4 h-4" />Search Console
+                  </button>
+                  <button onClick={() => handleConnect('Google Analytics')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" />Analytics 4
+                  </button>
+                  <button onClick={() => handleConnect('SEMrush')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <Activity className="w-4 h-4" />SEMrush
+                  </button>
+                  <button onClick={() => handleConnect('Ahrefs')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <LinkIcon className="w-4 h-4" />Ahrefs
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-patriot-navy border-2 border-phoenix-coral/30 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-desert-sand text-sm font-bold">Avg Keyword Position</p>
+              <TrendingUp className="w-5 h-5 text-phoenix-coral" />
+            </div>
+            {connections.googleSearchConsole ? (
+              <>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+                <p className="text-desert-sand text-sm">Loading...</p>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-desert-tan/30">--</p>
+                <button onClick={() => handleConnect('Google Search Console')} className="text-phoenix-coral text-xs font-bold hover:underline flex items-center gap-1">
+                  Connect Search Console<ArrowUpRight className="w-3 h-3" />
+                </button>
+              </>
+            )}
+          </div>
+          <div className="bg-patriot-navy border-2 border-phoenix-coral/30 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-desert-sand text-sm font-bold">Total Backlinks</p>
+              <LinkIcon className="w-5 h-5 text-phoenix-coral" />
+            </div>
+            {connections.ahrefs ? (
+              <>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+                <p className="text-desert-sand text-sm">Loading...</p>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-desert-tan/30">--</p>
+                <button onClick={() => handleConnect('Ahrefs')} className="text-phoenix-coral text-xs font-bold hover:underline flex items-center gap-1">
+                  Connect Ahrefs<ArrowUpRight className="w-3 h-3" />
+                </button>
+              </>
+            )}
+          </div>
+          <div className="bg-patriot-navy border-2 border-phoenix-coral/30 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-desert-sand text-sm font-bold">Domain Authority</p>
+              <Award className="w-5 h-5 text-phoenix-coral" />
+            </div>
+            {connections.moz ? (
+              <>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+                <p className="text-desert-sand text-sm">Loading...</p>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-desert-tan/30">--</p>
+                <button onClick={() => handleConnect('Moz')} className="text-phoenix-coral text-xs font-bold hover:underline flex items-center gap-1">
+                  Connect Moz<ArrowUpRight className="w-3 h-3" />
+                </button>
+              </>
+            )}
+          </div>
+          <div className="bg-patriot-navy border-2 border-phoenix-coral/30 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-desert-sand text-sm font-bold">Organic Traffic</p>
+              <Eye className="w-5 h-5 text-phoenix-coral" />
+            </div>
+            {connections.googleAnalytics ? (
+              <>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+                <p className="text-desert-sand text-sm">Loading...</p>
+              </>
+            ) : (
+              <>
+                <p className="text-3xl font-bold text-desert-tan/30">--</p>
+                <button onClick={() => handleConnect('Google Analytics')} className="text-phoenix-coral text-xs font-bold hover:underline flex items-center gap-1">
+                  Connect Analytics<ArrowUpRight className="w-3 h-3" />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        <DashboardCard title="Average Ranking Trend">
+          {connections.googleSearchConsole ? (
+            <div className="text-center py-12">
+              <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+              <p className="text-desert-sand">Loading ranking data...</p>
+            </div>
+          ) : (
+            <ChartEmptyState serviceName="Google Search Console" serviceIcon={<Search className="w-8 h-8 text-white" />} chartType="Ranking Trend Chart" onConnect={() => handleConnect('Google Search Console')} />
+          )}
         </DashboardCard>
 
-        {/* Backlinks & Core Web Vitals */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DashboardCard title="Recent Backlinks">
-            <div className="space-y-3">
-              {backlinks.map((link, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-patriot-darkNavy rounded-lg">
-                  <div className="flex-1">
-                    <p className="text-desert-tan font-medium">{link.domain}</p>
-                    <div className="flex items-center gap-3 text-sm text-desert-sand mt-1">
-                      <span>DA: {link.authority}</span>
-                      <span className={link.type === 'Dofollow' ? 'text-green-400' : 'text-yellow-400'}>
-                        {link.type}
-                      </span>
-                      <span>{link.date}</span>
-                    </div>
-                  </div>
-                  <div className="w-12 h-12 rounded-full bg-phoenix-gradient flex items-center justify-center text-white font-bold">
-                    {link.authority}
-                  </div>
-                </div>
-              ))}
+        <DashboardCard title="Keyword Rankings">
+          {connections.googleSearchConsole || connections.semrush ? (
+            <div className="text-center py-12">
+              <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+              <p className="text-desert-sand">Loading keyword data...</p>
             </div>
-          </DashboardCard>
+          ) : (
+            <ServiceConnection serviceName="Google Search Console" serviceIcon={<Search className="w-10 h-10 text-white" />} description="Connect Google Search Console to track your keyword rankings, search impressions, and click-through rates." features={['Real-time keyword position tracking', 'Search query performance data', 'Click-through rate analysis', 'Impression and click trends', 'Mobile vs desktop rankings', 'Page-level performance breakdown']} requiresOAuth onConnect={() => handleConnect('Google Search Console')} docsUrl="https://search.google.com/search-console" />
+          )}
+        </DashboardCard>
 
-          <DashboardCard title="Core Web Vitals">
-            <div className="space-y-4">
-              {coreWebVitals.map((vital, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-desert-tan">{vital.metric}</span>
-                    <span className="text-green-400 font-bold">GOOD</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs text-desert-sand mb-1">Mobile</p>
-                      <div className="bg-patriot-darkNavy rounded-lg p-2 text-center">
-                        <p className="text-lg font-bold text-desert-tan">{vital.mobile}{vital.metric.includes('CLS') ? '' : vital.metric.includes('Score') ? '' : 's'}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-xs text-desert-sand mb-1">Desktop</p>
-                      <div className="bg-patriot-darkNavy rounded-lg p-2 text-center">
-                        <p className="text-lg font-bold text-desert-tan">{vital.desktop}{vital.metric.includes('CLS') ? '' : vital.metric.includes('Score') ? '' : 's'}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardCard title="Backlink Profile">
+            {connections.ahrefs ? (
+              <div className="text-center py-12">
+                <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+                <p className="text-desert-sand">Loading backlink data...</p>
+              </div>
+            ) : (
+              <ServiceConnection serviceName="Ahrefs" serviceIcon={<LinkIcon className="w-10 h-10 text-white" />} description="Connect Ahrefs to monitor your backlink profile and referring domains." features={['Backlink monitoring & alerts', 'Referring domains analysis', 'Domain Rating tracking', 'New & lost backlinks', 'Anchor text distribution', 'Broken backlink detection']} requiresApiKey onConnect={() => handleConnect('Ahrefs')} docsUrl="https://ahrefs.com/api" />
+            )}
+          </DashboardCard>
+          <DashboardCard title="Domain Authority & Metrics">
+            {connections.moz ? (
+              <div className="text-center py-12">
+                <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+                <p className="text-desert-sand">Loading Moz data...</p>
+              </div>
+            ) : (
+              <ServiceConnection serviceName="Moz" serviceIcon={<Award className="w-10 h-10 text-white" />} description="Connect Moz to track Domain Authority and spam score metrics." features={['Domain Authority tracking', 'Page Authority scores', 'Spam Score monitoring', 'Link metrics & analysis', 'MozRank tracking', 'Root domains linking']} requiresApiKey onConnect={() => handleConnect('Moz')} docsUrl="https://moz.com/products/api" />
+            )}
           </DashboardCard>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardCard title="Core Web Vitals">
+            {connections.pageSpeedInsights ? (
+              <div className="text-center py-12">
+                <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+                <p className="text-desert-sand">Loading vitals...</p>
+              </div>
+            ) : (
+              <ServiceConnection serviceName="PageSpeed Insights" serviceIcon={<Zap className="w-10 h-10 text-white" />} description="Connect PageSpeed Insights to monitor Core Web Vitals and performance." features={['LCP (Largest Contentful Paint)', 'FID (First Input Delay)', 'CLS (Cumulative Layout Shift)', 'Performance score tracking', 'Mobile & desktop analysis', 'Optimization recommendations']} requiresApiKey onConnect={() => handleConnect('PageSpeed Insights')} docsUrl="https://developers.google.com/speed/docs/insights/v5/get-started" />
+            )}
+          </DashboardCard>
+          <DashboardCard title="Technical SEO Audit">
+            {connections.semrush ? (
+              <div className="text-center py-12">
+                <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse text-phoenix-coral" />
+                <p className="text-desert-sand">Loading audit...</p>
+              </div>
+            ) : (
+              <ServiceConnection serviceName="SEMrush" serviceIcon={<FileSearch className="w-10 h-10 text-white" />} description="Connect SEMrush for comprehensive site audits and technical SEO." features={['Crawl error detection', 'Broken link identification', 'Duplicate content analysis', 'Meta tag optimization', 'Site health score', 'Priority issue ranking']} requiresApiKey onConnect={() => handleConnect('SEMrush')} docsUrl="https://www.semrush.com/api-analytics/" />
+            )}
+          </DashboardCard>
+        </div>
+
+        <DashboardCard title="Local SEO Performance">
+          {connections.brightLocal ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-patriot-darkNavy rounded-lg p-6 text-center">
+                <MapPin className="w-8 h-8 text-phoenix-coral mx-auto mb-3" />
+                <p className="text-desert-sand text-sm mb-1">Local Pack Rankings</p>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+              </div>
+              <div className="bg-patriot-darkNavy rounded-lg p-6 text-center">
+                <Star className="w-8 h-8 text-phoenix-coral mx-auto mb-3" />
+                <p className="text-desert-sand text-sm mb-1">Google Reviews</p>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+              </div>
+              <div className="bg-patriot-darkNavy rounded-lg p-6 text-center">
+                <Globe className="w-8 h-8 text-phoenix-coral mx-auto mb-3" />
+                <p className="text-desert-sand text-sm mb-1">Citations</p>
+                <p className="text-3xl font-bold text-desert-tan">--</p>
+              </div>
+            </div>
+          ) : (
+            <ServiceConnection serviceName="BrightLocal" serviceIcon={<MapPin className="w-10 h-10 text-white" />} description="Connect BrightLocal for local search rankings, citations, and reviews." features={['Local pack rank tracking', 'Google Business Profile insights', 'Citation audit & building', 'Review monitoring & alerts', 'Local competitor analysis', 'NAP consistency checking']} requiresApiKey onConnect={() => handleConnect('BrightLocal')} docsUrl="https://www.brightlocal.com/api/" />
+          )}
+        </DashboardCard>
+
+        <MultiServiceConnection title="SEO Platform Integrations" description="Connect your SEO tools to unlock the full power of your SEO Command Center" services={[
+          { name: 'Google Search Console', icon: <Search className="w-4 h-4 text-phoenix-coral" />, connected: connections.googleSearchConsole, onConnect: () => handleConnect('Google Search Console') },
+          { name: 'Google Analytics 4', icon: <BarChart3 className="w-4 h-4 text-phoenix-coral" />, connected: connections.googleAnalytics, onConnect: () => handleConnect('Google Analytics') },
+          { name: 'SEMrush', icon: <Activity className="w-4 h-4 text-phoenix-coral" />, connected: connections.semrush, onConnect: () => handleConnect('SEMrush') },
+          { name: 'Ahrefs', icon: <LinkIcon className="w-4 h-4 text-phoenix-coral" />, connected: connections.ahrefs, onConnect: () => handleConnect('Ahrefs') },
+          { name: 'Moz', icon: <Award className="w-4 h-4 text-phoenix-coral" />, connected: connections.moz, onConnect: () => handleConnect('Moz') },
+          { name: 'PageSpeed Insights', icon: <Zap className="w-4 h-4 text-phoenix-coral" />, connected: connections.pageSpeedInsights, onConnect: () => handleConnect('PageSpeed Insights') },
+          { name: 'BrightLocal', icon: <MapPin className="w-4 h-4 text-phoenix-coral" />, connected: connections.brightLocal, onConnect: () => handleConnect('BrightLocal') },
+        ]} />
       </div>
     </DashboardLayout>
   );

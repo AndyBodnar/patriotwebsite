@@ -1,18 +1,22 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { authApi, User as ApiUser } from '@/lib/api-client';
 
 interface User {
   id: string;
   email: string;
-  name?: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  role: 'USER' | 'ADMIN';
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -25,71 +29,77 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing token on mount
-    const storedToken = localStorage.getItem('auth_token');
-    const storedUser = localStorage.getItem('auth_user');
+    // Check for existing token on mount and verify with /me endpoint
+    const checkAuth = async () => {
+      const storedToken = localStorage.getItem('auth_token');
+      const storedUser = localStorage.getItem('auth_user');
 
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      console.log('CheckAuth on mount:', { storedToken: !!storedToken, storedUser: !!storedUser });
 
-      // Ensure cookie is also set
-      document.cookie = `auth_token=${storedToken}; path=/; max-age=86400; SameSite=Strict`;
-    }
-    setIsLoading(false);
+      if (storedToken && storedUser) {
+        try {
+          // Verify token with /me endpoint
+          const response = await authApi.me();
+          console.log('Token verified:', response.data);
+          setUser(response.data.user);
+          setToken(storedToken);
+
+          // Ensure cookie is also set
+          document.cookie = `auth_token=${storedToken}; path=/; max-age=86400; SameSite=Strict`;
+        } catch (error) {
+          console.log('Token verification failed:', error);
+          // Token is invalid, clear auth data
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('auth_user');
+          document.cookie = 'auth_token=; path=/; max-age=0';
+        }
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (email: string, password: string) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    try {
+      console.log('Login attempt:', { email, apiUrl: process.env.NEXT_PUBLIC_API_URL });
+      const response = await authApi.login({ email, password });
+      console.log('Login response:', response);
 
-    const response = await fetch(`${apiUrl}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+      const userData = response.data.data.user;
+      const userToken = response.data.data.token;
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Login failed');
+      setUser(userData);
+      setToken(userToken);
+
+      // Store in localStorage
+      localStorage.setItem('auth_token', userToken);
+      localStorage.setItem('auth_user', JSON.stringify(userData));
+
+      // Store in cookie for middleware access
+      document.cookie = `auth_token=${userToken}; path=/; max-age=86400; SameSite=Strict`;
+    } catch (error: any) {
+      console.error('Login error:', error);
+      console.error('Error response:', error.response);
+      throw new Error(error.response?.data?.error || error.message || 'Login failed');
     }
-
-    const data = await response.json();
-
-    // Handle both nested and flat response formats (DevApi compatibility layer)
-    let userData: User;
-    let userToken: string;
-
-    if (data.data) {
-      // Format: { success: true, data: { user, token } }
-      userData = data.data.user;
-      userToken = data.data.token;
-    } else {
-      // Format: { user, token }
-      userData = data.user;
-      userToken = data.token;
-    }
-
-    setUser(userData);
-    setToken(userToken);
-
-    // Store in localStorage
-    localStorage.setItem('auth_token', userToken);
-    localStorage.setItem('auth_user', JSON.stringify(userData));
-
-    // Store in cookie for middleware access
-    document.cookie = `auth_token=${userToken}; path=/; max-age=86400; SameSite=Strict`;
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
-
-    // Clear cookie
-    document.cookie = 'auth_token=; path=/; max-age=0';
+  const logout = async () => {
+    try {
+      // Call logout API to blacklist token
+      await authApi.logout();
+    } catch (error) {
+      // Continue with logout even if API call fails
+      console.error('Logout API error:', error);
+    } finally {
+      // Clear local auth state
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      document.cookie = 'auth_token=; path=/; max-age=0';
+    }
   };
 
   return (
@@ -115,3 +125,5 @@ export function useAuth() {
   }
   return context;
 }
+
+

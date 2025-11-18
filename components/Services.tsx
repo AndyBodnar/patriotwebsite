@@ -1,8 +1,8 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { Trash2, Truck, Recycle, Building2, Home, Factory } from 'lucide-react';
-import { useRef } from 'react';
+import { Truck, Recycle, Building2, Home, Factory, X, ExternalLink, MapPin } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 const services = [
   {
@@ -34,20 +34,90 @@ const services = [
     title: 'Roll-Off Dumpsters',
     description: 'Various sizes from 10 to 40 yards for any project scale',
     features: ['10-40 Yard', 'Easy Access', 'Clean Service']
-  },
-  {
-    icon: Trash2,
-    title: 'Junk Removal',
-    description: 'Full-service junk hauling and property cleanouts',
-    features: ['Same Day', 'Load & Haul', 'Estate Cleanout']
   }
 ];
 
 export default function Services() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [showRollOffModal, setShowRollOffModal] = useState(false);
 
   return (
+    <>
+      {/* Roll-Off Partners Modal */}
+      {showRollOffModal && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 overflow-y-auto"
+          onClick={() => setShowRollOffModal(false)}
+        >
+          <div className="min-h-full flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-patriot-navy border-2 border-phoenix-coral rounded-xl max-w-lg w-full p-6 relative my-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+            <button
+              onClick={() => setShowRollOffModal(false)}
+              className="absolute top-4 right-4 text-desert-sand hover:text-phoenix-coral"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="text-center mb-6">
+              <Truck className="w-12 h-12 text-phoenix-coral mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-desert-tan mb-2">Roll-Off Dumpster Services</h3>
+              <p className="text-desert-sand">Select your area to connect with our sister company</p>
+            </div>
+
+            <div className="space-y-4">
+              {/* Phoenix Area */}
+              <a
+                href="https://scottwasteservices.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-patriot-darkNavy border-2 border-phoenix-coral/30 hover:border-phoenix-coral rounded-lg p-4 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-6 h-6 text-phoenix-coral" />
+                    <div>
+                      <p className="text-desert-tan font-bold group-hover:text-phoenix-coral transition-colors">Phoenix & Surrounding Areas</p>
+                      <p className="text-desert-sand text-sm">scottwasteservices.com</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-desert-sand group-hover:text-phoenix-coral transition-colors" />
+                </div>
+              </a>
+
+              {/* Northern AZ */}
+              <a
+                href="https://yavapaiwastesolutions.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-patriot-darkNavy border-2 border-phoenix-coral/30 hover:border-phoenix-coral rounded-lg p-4 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-6 h-6 text-phoenix-coral" />
+                    <div>
+                      <p className="text-desert-tan font-bold group-hover:text-phoenix-coral transition-colors">Northern Arizona</p>
+                      <p className="text-desert-sand text-sm">yavapaiwastesolutions.com</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-desert-sand group-hover:text-phoenix-coral transition-colors" />
+                </div>
+              </a>
+            </div>
+
+            <p className="text-center text-desert-sand text-sm mt-6">
+              Our trusted partners provide the same quality service you expect from Patriot Disposal
+            </p>
+          </motion.div>
+          </div>
+        </div>
+      )}
     <section ref={ref} className="py-24 bg-gradient-to-b from-patriot-blue via-patriot-navy to-patriot-darkNavy relative overflow-hidden">
       {/* Background pattern - removed for sharp rendering */}
 
@@ -75,6 +145,7 @@ export default function Services() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
+            const isRollOff = service.title === 'Roll-Off Dumpsters';
             return (
               <motion.div
                 key={index}
@@ -83,6 +154,8 @@ export default function Services() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                 className="group relative"
+                onClick={isRollOff ? () => setShowRollOffModal(true) : undefined}
+                style={isRollOff ? { cursor: 'pointer' } : undefined}
               >
                 <div className="relative bg-patriot-darkNavy border-2 border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-xl p-8 h-full">
                   {/* Icon with glow effect */}
@@ -126,5 +199,6 @@ export default function Services() {
         </div>
       </div>
     </section>
+    </>
   );
 }

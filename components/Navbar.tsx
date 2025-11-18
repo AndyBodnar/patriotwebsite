@@ -32,6 +32,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Quote', href: '#quote' },
   ];
 
@@ -124,7 +125,8 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-desert-tan p-2"
+            className="md:hidden text-desert-tan p-3 -mr-3 active:bg-phoenix-coral/20 rounded-lg transition-colors"
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -136,13 +138,13 @@ export default function Navbar() {
           animate={{ height: isOpen ? 'auto' : 0 }}
           className="md:hidden overflow-hidden"
         >
-          <div className="py-4 space-y-4">
+          <div className="py-4 space-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block text-desert-tan hover:text-phoenix-coral transition-colors font-medium"
+                className="block text-desert-tan hover:text-phoenix-coral active:bg-phoenix-coral/20 transition-colors font-medium py-3 px-2 rounded-lg"
               >
                 {link.name}
               </a>

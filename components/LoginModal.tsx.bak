@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface LoginModalProps {
@@ -11,7 +10,6 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
-  const router = useRouter();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,12 +23,11 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
 
     try {
       await login(email, password);
+      onSuccess?.();
       onClose();
-
-      // Force full page reload to ensure auth state is properly loaded
-      window.location.href = '/system';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -38,8 +35,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative my-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative">
         {/* Close button */}
         <button
           onClick={onClose}

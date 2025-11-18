@@ -2,286 +2,187 @@
 
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import DashboardCard from '@/components/dashboard/DashboardCard';
-import { Bell, AlertTriangle, TrendingDown, Link as LinkIcon, Zap, Shield, CheckCircle, XCircle } from 'lucide-react';
+import ServiceConnection, { MultiServiceConnection } from '@/components/dashboard/ServiceConnection';
+import { Bell, AlertTriangle, Mail, MessageSquare, Smartphone, Webhook, CheckCircle, XCircle, ArrowUpRight } from 'lucide-react';
 
-const recentAlerts = [
-  {
-    id: 1,
-    type: 'competitor',
-    severity: 'high',
-    title: 'Competitor Activity Spike',
-    message: '3 visits from Waste Management IP range in the last hour',
-    timestamp: '5 minutes ago',
-    status: 'unread',
-    icon: AlertTriangle,
-  },
-  {
-    id: 2,
-    type: 'ranking',
-    severity: 'high',
-    title: 'Keyword Ranking Drop',
-    message: '"dumpster rental phoenix" dropped from #3 to #7 (-4 positions)',
-    timestamp: '2 hours ago',
-    status: 'unread',
-    icon: TrendingDown,
-  },
-  {
-    id: 3,
-    type: 'backlink',
-    severity: 'medium',
-    title: 'New High-Authority Backlink',
-    message: 'constructiontoday.net (DA 72) linked to your site',
-    timestamp: '4 hours ago',
-    status: 'read',
-    icon: LinkIcon,
-  },
-  {
-    id: 4,
-    type: 'traffic',
-    severity: 'high',
-    title: 'Traffic Spike Detected',
-    message: '250% increase in traffic from organic search',
-    timestamp: '6 hours ago',
-    status: 'read',
-    icon: Zap,
-  },
-  {
-    id: 5,
-    type: 'security',
-    severity: 'medium',
-    title: 'Multiple VPN Visits',
-    message: '12 visitors detected using VPN/Proxy services',
-    timestamp: '1 day ago',
-    status: 'read',
-    icon: Shield,
-  },
-];
-
-const alertRules = [
-  {
-    name: 'Competitor Visits',
-    description: 'Alert when visits from known competitor IPs are detected',
-    channels: ['Email', 'Dashboard'],
-    status: 'active',
-    threshold: '> 3 visits/hour',
-  },
-  {
-    name: 'Ranking Drop',
-    description: 'Alert when keywords drop more than 5 positions',
-    channels: ['Email', 'SMS', 'Dashboard'],
-    status: 'active',
-    threshold: '> 5 positions',
-  },
-  {
-    name: 'Traffic Spike',
-    description: 'Alert on sudden traffic increases or decreases',
-    channels: ['Email', 'Dashboard'],
-    status: 'active',
-    threshold: '> 50% change',
-  },
-  {
-    name: 'New Backlinks',
-    description: 'Alert when high-authority domains link to your site',
-    channels: ['Email'],
-    status: 'active',
-    threshold: 'DA > 70',
-  },
-  {
-    name: 'Core Web Vitals',
-    description: 'Alert when Core Web Vitals enter warning zone',
-    channels: ['Email', 'Dashboard'],
-    status: 'paused',
-    threshold: 'LCP > 2.5s',
-  },
-  {
-    name: 'Suspicious Activity',
-    description: 'Alert on scraping attempts or unusual patterns',
-    channels: ['Email', 'SMS', 'Dashboard'],
-    status: 'active',
-    threshold: 'Behavioral flags',
-  },
-];
+const connections = {
+  emailService: false,
+  smsService: false,
+  slackIntegration: false,
+  webhooks: false,
+};
 
 export default function AlertsPage() {
+  const handleConnect = (service: string) => {
+    console.log(`Connect ${service}`);
+  };
+
+  const connectedCount = Object.values(connections).filter(Boolean).length;
+  const totalServices = Object.keys(connections).length;
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-desert-tan mb-2">Alerts & Notifications</h1>
-          <p className="text-desert-sand">Configure automated alerts and view notification history</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-desert-tan mb-2">Alerts & Notifications</h1>
+            <p className="text-desert-sand">Configure automated alerts and view notification history</p>
+          </div>
+          <div className="text-right">
+            <p className="text-phoenix-coral font-bold text-2xl">{connectedCount}/{totalServices}</p>
+            <p className="text-desert-sand text-sm">Channels Active</p>
+          </div>
         </div>
+
+        {connectedCount === 0 && (
+          <div className="bg-gradient-to-r from-phoenix-coral/20 to-patriot-blue/20 border-2 border-phoenix-coral/50 rounded-lg p-8">
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 bg-phoenix-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                <Bell className="w-8 h-8 text-white" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-desert-tan font-bold text-2xl mb-2">Set Up Alert Channels</h3>
+                <p className="text-desert-sand mb-6 max-w-2xl">
+                  Connect notification services to receive real-time alerts about ranking changes, competitor activity, site issues, and more.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button onClick={() => handleConnect('Email Service')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <Mail className="w-4 h-4" />Email
+                  </button>
+                  <button onClick={() => handleConnect('SMS Service')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <Smartphone className="w-4 h-4" />SMS
+                  </button>
+                  <button onClick={() => handleConnect('Slack')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4" />Slack
+                  </button>
+                  <button onClick={() => handleConnect('Webhooks')} className="px-4 py-3 bg-patriot-navy border-2 border-phoenix-coral/50 text-desert-tan rounded-lg font-bold text-sm hover:border-phoenix-coral transition-all flex items-center gap-2">
+                    <Webhook className="w-4 h-4" />Webhooks
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Alert Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="bg-patriot-navy border-2 border-red-500/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-desert-sand text-sm">Unread Alerts</p>
-              <Bell className="w-5 h-5 text-red-400 animate-pulse" />
+              <Bell className="w-5 h-5 text-red-400/30" />
             </div>
-            <p className="text-4xl font-bold text-red-400">12</p>
+            <p className="text-4xl font-bold text-desert-tan/30">--</p>
+            <button onClick={() => handleConnect('Email Service')} className="text-phoenix-coral text-xs font-bold hover:underline flex items-center gap-1 mt-2">
+              Connect Email<ArrowUpRight className="w-3 h-3" />
+            </button>
           </div>
 
           <div className="bg-patriot-navy border-2 border-phoenix-coral/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-desert-sand text-sm">Active Rules</p>
-              <CheckCircle className="w-5 h-5 text-green-400" />
+              <CheckCircle className="w-5 h-5 text-green-400/30" />
             </div>
-            <p className="text-4xl font-bold text-green-400">5</p>
+            <p className="text-4xl font-bold text-desert-tan/30">--</p>
+            <p className="text-desert-sand text-xs mt-2">Configure rules below</p>
           </div>
 
           <div className="bg-patriot-navy border-2 border-yellow-500/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-desert-sand text-sm">Today&apos;s Alerts</p>
-              <AlertTriangle className="w-5 h-5 text-yellow-400" />
+              <AlertTriangle className="w-5 h-5 text-yellow-400/30" />
             </div>
-            <p className="text-4xl font-bold text-yellow-400">27</p>
+            <p className="text-4xl font-bold text-desert-tan/30">--</p>
+            <p className="text-desert-sand text-xs mt-2">Connect to track</p>
           </div>
 
           <div className="bg-patriot-navy border-2 border-gray-500/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-desert-sand text-sm">Paused Rules</p>
-              <XCircle className="w-5 h-5 text-gray-400" />
+              <XCircle className="w-5 h-5 text-gray-400/30" />
             </div>
-            <p className="text-4xl font-bold text-gray-400">1</p>
+            <p className="text-4xl font-bold text-desert-tan/30">--</p>
+            <p className="text-desert-sand text-xs mt-2">Configure rules below</p>
           </div>
         </div>
 
         {/* Recent Alerts */}
         <DashboardCard title="Recent Alerts">
-          <div className="space-y-3">
-            {recentAlerts.map((alert) => {
-              const Icon = alert.icon;
-              return (
-                <div
-                  key={alert.id}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    alert.status === 'unread'
-                      ? 'bg-red-900/20 border-red-500/50'
-                      : 'bg-patriot-darkNavy border-phoenix-coral/20'
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      alert.severity === 'high' ? 'bg-red-500/20' :
-                      alert.severity === 'medium' ? 'bg-yellow-500/20' :
-                      'bg-blue-500/20'
-                    }`}>
-                      <Icon className={`w-5 h-5 ${
-                        alert.severity === 'high' ? 'text-red-400' :
-                        alert.severity === 'medium' ? 'text-yellow-400' :
-                        'text-blue-400'
-                      }`} />
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <p className="text-desert-tan font-bold">{alert.title}</p>
-                        {alert.status === 'unread' && (
-                          <span className="px-2 py-1 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded-full font-bold">
-                            NEW
-                          </span>
-                        )}
-                        <span className={`px-2 py-1 rounded text-xs font-bold ${
-                          alert.severity === 'high' ? 'bg-red-500/20 text-red-400' :
-                          alert.severity === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                          'bg-blue-500/20 text-blue-400'
-                        }`}>
-                          {alert.severity.toUpperCase()}
-                        </span>
-                      </div>
-                      <p className="text-desert-sand text-sm mb-2">{alert.message}</p>
-                      <p className="text-desert-sand text-xs">{alert.timestamp}</p>
-                    </div>
-
-                    <button className="text-desert-sand hover:text-phoenix-coral text-sm">
-                      Mark Read
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </DashboardCard>
-
-        {/* Alert Rules */}
-        <DashboardCard title="Alert Rules & Configuration">
-          <div className="space-y-3">
-            {alertRules.map((rule, index) => (
-              <div key={index} className="p-4 bg-patriot-darkNavy rounded-lg border-2 border-phoenix-coral/20 hover:border-phoenix-coral/50 transition-colors">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <p className="text-desert-tan font-bold text-lg">{rule.name}</p>
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        rule.status === 'active' ? 'bg-green-500/20 text-green-400 border border-green-500' :
-                        'bg-gray-500/20 text-gray-400 border border-gray-500'
-                      }`}>
-                        {rule.status.toUpperCase()}
-                      </span>
-                    </div>
-                    <p className="text-desert-sand text-sm mb-3">{rule.description}</p>
-
-                    <div className="flex items-center gap-6 text-sm">
-                      <div>
-                        <span className="text-desert-sand">Threshold: </span>
-                        <span className="text-phoenix-coral font-bold">{rule.threshold}</span>
-                      </div>
-                      <div>
-                        <span className="text-desert-sand">Channels: </span>
-                        <span className="text-phoenix-coral font-bold">{rule.channels.join(', ')}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 bg-phoenix-gradient text-white rounded font-bold hover:opacity-90">
-                      Edit
-                    </button>
-                    <button className={`px-4 py-2 rounded font-bold ${
-                      rule.status === 'active'
-                        ? 'bg-gray-500/20 text-gray-400 border border-gray-500'
-                        : 'bg-green-500/20 text-green-400 border border-green-500'
-                    }`}>
-                      {rule.status === 'active' ? 'Pause' : 'Activate'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="text-center py-12 bg-patriot-darkNavy rounded-lg">
+            <Bell className="w-12 h-12 text-phoenix-coral/30 mx-auto mb-4" />
+            <h4 className="text-desert-tan font-bold text-lg mb-2">No Alerts Yet</h4>
+            <p className="text-desert-sand text-sm mb-4 max-w-md mx-auto">
+              Connect notification channels and configure alert rules to start receiving alerts about your SEO performance.
+            </p>
+            <button onClick={() => handleConnect('Email Service')} className="px-6 py-3 bg-phoenix-gradient text-white rounded-lg font-bold hover:opacity-90">
+              Set Up Alerts
+            </button>
           </div>
         </DashboardCard>
 
         {/* Notification Channels */}
-        <DashboardCard title="Notification Channels">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-6 bg-patriot-darkNavy border-2 border-green-500/50 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-desert-tan font-bold text-lg">Email</p>
-                <CheckCircle className="w-6 h-6 text-green-400" />
-              </div>
-              <p className="text-desert-sand text-sm mb-2">team@patriotdisposal.com</p>
-              <p className="text-green-400 text-xs font-bold">ACTIVE</p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardCard title="Email Notifications">
+            <ServiceConnection serviceName="SendGrid / Resend" serviceIcon={<Mail className="w-10 h-10 text-white" />} description="Connect an email service to receive alerts via email for ranking changes, site issues, and competitor activity." features={['Instant alert emails', 'Daily/weekly digests', 'Custom email templates', 'Multiple recipients', 'Priority filtering', 'Unsubscribe management']} requiresApiKey onConnect={() => handleConnect('Email Service')} docsUrl="https://sendgrid.com/docs/api-reference/" />
+          </DashboardCard>
 
-            <div className="p-6 bg-patriot-darkNavy border-2 border-green-500/50 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-desert-tan font-bold text-lg">SMS</p>
-                <CheckCircle className="w-6 h-6 text-green-400" />
-              </div>
-              <p className="text-desert-sand text-sm mb-2">+1 (480) 851-2000</p>
-              <p className="text-green-400 text-xs font-bold">ACTIVE (Critical Only)</p>
-            </div>
+          <DashboardCard title="SMS Notifications">
+            <ServiceConnection serviceName="Twilio" serviceIcon={<Smartphone className="w-10 h-10 text-white" />} description="Connect Twilio for SMS alerts on critical issues that need immediate attention." features={['Critical alerts only', 'Instant delivery', 'Multiple phone numbers', 'Delivery confirmation', 'Time-based rules', 'Emergency escalation']} requiresApiKey onConnect={() => handleConnect('SMS Service')} docsUrl="https://www.twilio.com/docs/sms" />
+          </DashboardCard>
+        </div>
 
-            <div className="p-6 bg-patriot-darkNavy border-2 border-gray-500/50 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-desert-tan font-bold text-lg">Slack</p>
-                <XCircle className="w-6 h-6 text-gray-400" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardCard title="Slack Integration">
+            <ServiceConnection serviceName="Slack" serviceIcon={<MessageSquare className="w-10 h-10 text-white" />} description="Connect Slack to receive alerts in your team channels for collaborative monitoring." features={['Channel notifications', 'Threaded updates', 'Interactive alerts', 'Custom bot name', 'Multiple workspaces', 'Mention support']} requiresOAuth onConnect={() => handleConnect('Slack')} docsUrl="https://api.slack.com/messaging/webhooks" />
+          </DashboardCard>
+
+          <DashboardCard title="Custom Webhooks">
+            <ServiceConnection serviceName="Webhooks" serviceIcon={<Webhook className="w-10 h-10 text-white" />} description="Set up custom webhooks to send alerts to any external service or your own applications." features={['Custom endpoints', 'JSON payloads', 'Authentication headers', 'Retry logic', 'Event filtering', 'Payload templates']} requiresApiKey onConnect={() => handleConnect('Webhooks')} docsUrl="/system/settings" />
+          </DashboardCard>
+        </div>
+
+        {/* Alert Rules */}
+        <DashboardCard title="Alert Rules Configuration">
+          <div className="bg-patriot-darkNavy rounded-lg p-6">
+            <h4 className="text-desert-tan font-bold text-lg mb-4">Available Alert Types</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">Ranking Changes</p>
+                <p className="text-desert-sand text-sm">Alert when keywords drop more than X positions</p>
               </div>
-              <p className="text-desert-sand text-sm mb-2">Not configured</p>
-              <button className="text-phoenix-coral text-xs font-bold hover:underline">Configure</button>
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">Competitor Activity</p>
+                <p className="text-desert-sand text-sm">Alert on visits from competitor IP ranges</p>
+              </div>
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">Traffic Spikes</p>
+                <p className="text-desert-sand text-sm">Alert on sudden traffic increases/decreases</p>
+              </div>
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">New Backlinks</p>
+                <p className="text-desert-sand text-sm">Alert when high-authority sites link to you</p>
+              </div>
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">Core Web Vitals</p>
+                <p className="text-desert-sand text-sm">Alert when performance metrics degrade</p>
+              </div>
+              <div className="p-4 bg-patriot-navy rounded-lg border border-phoenix-coral/20">
+                <p className="text-desert-tan font-bold mb-1">Site Errors</p>
+                <p className="text-desert-sand text-sm">Alert on 404s, 500s, and crawl errors</p>
+              </div>
             </div>
+            <p className="text-desert-sand text-sm mt-4">
+              Connect notification channels above to enable and configure these alert rules.
+            </p>
           </div>
         </DashboardCard>
+
+        {/* Integration Status */}
+        <MultiServiceConnection title="Notification Channel Integrations" description="Connect these services to receive alerts through multiple channels" services={[
+          { name: 'Email (SendGrid/Resend)', icon: <Mail className="w-4 h-4 text-phoenix-coral" />, connected: connections.emailService, onConnect: () => handleConnect('Email Service') },
+          { name: 'SMS (Twilio)', icon: <Smartphone className="w-4 h-4 text-phoenix-coral" />, connected: connections.smsService, onConnect: () => handleConnect('SMS Service') },
+          { name: 'Slack', icon: <MessageSquare className="w-4 h-4 text-phoenix-coral" />, connected: connections.slackIntegration, onConnect: () => handleConnect('Slack') },
+          { name: 'Custom Webhooks', icon: <Webhook className="w-4 h-4 text-phoenix-coral" />, connected: connections.webhooks, onConnect: () => handleConnect('Webhooks') },
+        ]} />
       </div>
     </DashboardLayout>
   );

@@ -1,163 +1,244 @@
 'use client';
 
+import { useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import DashboardCard from '@/components/dashboard/DashboardCard';
-import { FileText, Download, Mail, Calendar, TrendingUp, Users, Target, Award } from 'lucide-react';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { reportApi } from '@/lib/api-client';
+import { FileText, Download, Calendar, TrendingUp, Users, Truck, MapPin, DollarSign, Loader2 } from 'lucide-react';
 
 const reportTemplates = [
   {
-    id: 1,
-    name: 'Executive Summary',
-    description: 'High-level overview of traffic, SEO, and competitive metrics',
-    frequency: 'Weekly',
-    lastGenerated: '10/28/2025',
-    icon: TrendingUp,
-    color: 'phoenix-gold'
+    id: 'routes',
+    name: 'Routes Report',
+    description: 'Route completion rates, delays, and efficiency metrics',
+    icon: MapPin,
+    apiCall: 'getRoutes'
   },
   {
-    id: 2,
-    name: 'SEO Performance Report',
-    description: 'Detailed keyword rankings, backlinks, and technical SEO health',
-    frequency: 'Monthly',
-    lastGenerated: '10/01/2025',
-    icon: Target,
-    color: 'phoenix-coral'
+    id: 'fleet',
+    name: 'Fleet Report',
+    description: 'Vehicle status, maintenance schedules, and utilization',
+    icon: Truck,
+    apiCall: 'getFleet'
   },
   {
-    id: 3,
-    name: 'Competitor Analysis',
-    description: 'Side-by-side comparison with top 5 competitors',
-    frequency: 'Bi-Weekly',
-    lastGenerated: '10/15/2025',
-    icon: Award,
-    color: 'phoenix-orange'
+    id: 'revenue',
+    name: 'Revenue Report',
+    description: 'Income, outstanding payments, and billing summary',
+    icon: DollarSign,
+    apiCall: 'getRevenue'
   },
   {
-    id: 4,
-    name: 'Traffic Source Report',
-    description: 'Breakdown of organic, direct, referral, and paid traffic',
-    frequency: 'Weekly',
-    lastGenerated: '10/28/2025',
+    id: 'drivers',
+    name: 'Drivers Report',
+    description: 'Driver performance, certifications, and safety scores',
     icon: Users,
-    color: 'phoenix-flame'
+    apiCall: 'getDrivers'
   },
-];
-
-const scheduledReports = [
-  { report: 'Executive Summary', recipients: 'team@patriotdisposal.com', schedule: 'Every Monday 9:00 AM', status: 'active' },
-  { report: 'SEO Performance Report', recipients: 'seo@patriotdisposal.com', schedule: '1st of every month', status: 'active' },
-  { report: 'Competitor Analysis', recipients: 'management@patriotdisposal.com', schedule: 'Every other Friday', status: 'paused' },
+  {
+    id: 'customers',
+    name: 'Customers Report',
+    description: 'Customer accounts, service types, and account balances',
+    icon: TrendingUp,
+    apiCall: 'getCustomers'
+  },
 ];
 
 export default function ReportsPage() {
+  const [generating, setGenerating] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    endDate: new Date().toISOString().split('T')[0],
+  });
+  const [reportData, setReportData] = useState<any>(null);
+  const [activeReport, setActiveReport] = useState<string | null>(null);
+
+  const generateReport = async (reportId: string, apiCall: string) => {
+    setGenerating(reportId);
+    setActiveReport(reportId);
+    setReportData(null);
+
+    try {
+      let response;
+      const params = {
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      };
+
+      switch (apiCall) {
+        case 'getRoutes':
+          response = await reportApi.getRoutes(params);
+          break;
+        case 'getFleet':
+          response = await reportApi.getFleet(params);
+          break;
+        case 'getRevenue':
+          response = await reportApi.getRevenue(params);
+          break;
+        case 'getDrivers':
+          response = await reportApi.getDrivers();
+          break;
+        case 'getCustomers':
+          response = await reportApi.getCustomers();
+          break;
+        default:
+          throw new Error('Unknown report type');
+      }
+
+      setReportData(response.data.data);
+    } catch (err) {
+      console.error('Failed to generate report:', err);
+      alert('Failed to generate report');
+    } finally {
+      setGenerating(null);
+    }
+  };
+
+  const exportReport = async (format: string) => {
+    if (!activeReport) {
+      alert('Please generate a report first');
+      return;
+    }
+
+    try {
+      await reportApi.export({
+        reportType: activeReport,
+        format,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      });
+      alert(`Export to ${format.toUpperCase()} started`);
+    } catch (err) {
+      console.error('Failed to export report:', err);
+      alert('Failed to export report');
+    }
+  };
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-desert-tan mb-2">Reports & Exports</h1>
-          <p className="text-desert-sand">Generate and schedule automated reports</p>
-        </div>
+    <ProtectedRoute>
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold text-desert-tan mb-2">Reports & Exports</h1>
+            <p className="text-desert-sand">Generate and export operational reports</p>
+          </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <button className="bg-phoenix-gradient p-6 rounded-lg hover:scale-105 transition-transform">
-            <Download className="w-8 h-8 text-white mb-2" />
-            <p className="text-white font-bold">Generate Report Now</p>
-            <p className="text-white/80 text-sm mt-1">Create a custom report instantly</p>
-          </button>
+          {/* Date Range Selector */}
+          <div className="bg-patriot-navy border-2 border-phoenix-coral/30 rounded-lg p-6">
+            <div className="flex items-center gap-4 flex-wrap">
+              <div>
+                <label className="block text-desert-sand text-sm mb-2">Start Date</label>
+                <input
+                  type="date"
+                  value={dateRange.startDate}
+                  onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+                  className="bg-patriot-darkNavy border-2 border-desert-sand/20 rounded-lg px-4 py-2 text-desert-tan focus:outline-none focus:border-phoenix-coral"
+                />
+              </div>
+              <div>
+                <label className="block text-desert-sand text-sm mb-2">End Date</label>
+                <input
+                  type="date"
+                  value={dateRange.endDate}
+                  onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+                  className="bg-patriot-darkNavy border-2 border-desert-sand/20 rounded-lg px-4 py-2 text-desert-tan focus:outline-none focus:border-phoenix-coral"
+                />
+              </div>
+            </div>
+          </div>
 
-          <button className="bg-patriot-navy border-2 border-phoenix-coral p-6 rounded-lg hover:border-phoenix-coral/80 transition-colors">
-            <Calendar className="w-8 h-8 text-phoenix-coral mb-2" />
-            <p className="text-desert-tan font-bold">Schedule Report</p>
-            <p className="text-desert-sand text-sm mt-1">Set up automated delivery</p>
-          </button>
-
-          <button className="bg-patriot-navy border-2 border-phoenix-coral p-6 rounded-lg hover:border-phoenix-coral/80 transition-colors">
-            <Mail className="w-8 h-8 text-phoenix-coral mb-2" />
-            <p className="text-desert-tan font-bold">Email Reports</p>
-            <p className="text-desert-sand text-sm mt-1">Manage email distribution</p>
-          </button>
-        </div>
-
-        {/* Report Templates */}
-        <DashboardCard title="Available Report Templates">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {reportTemplates.map((template) => {
-              const Icon = template.icon;
-              return (
-                <div key={template.id} className="bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg p-6 hover:border-phoenix-coral transition-all hover:scale-105">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
+          {/* Report Templates */}
+          <DashboardCard title="Available Reports">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {reportTemplates.map((template) => {
+                const Icon = template.icon;
+                const isGenerating = generating === template.id;
+                const isActive = activeReport === template.id;
+                return (
+                  <div
+                    key={template.id}
+                    className={`bg-patriot-darkNavy border-2 rounded-lg p-6 transition-all ${
+                      isActive ? 'border-phoenix-coral' : 'border-phoenix-coral/30 hover:border-phoenix-coral'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-3">
                       <div className="w-12 h-12 bg-phoenix-gradient rounded-lg flex items-center justify-center">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-desert-tan font-bold text-lg">{template.name}</p>
-                        <p className="text-desert-sand text-sm">{template.frequency}</p>
+                        <p className="text-desert-tan font-bold">{template.name}</p>
                       </div>
                     </div>
-                  </div>
-                  <p className="text-desert-sand text-sm mb-4">{template.description}</p>
-                  <div className="flex items-center justify-between text-xs text-desert-sand">
-                    <span>Last: {template.lastGenerated}</span>
-                    <button className="px-4 py-2 bg-phoenix-gradient text-white rounded font-bold hover:opacity-90">
-                      Generate
+                    <p className="text-desert-sand text-sm mb-4">{template.description}</p>
+                    <button
+                      onClick={() => generateReport(template.id, template.apiCall)}
+                      disabled={isGenerating}
+                      className="w-full px-4 py-2 bg-phoenix-gradient text-white rounded font-bold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        'Generate'
+                      )}
                     </button>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </DashboardCard>
+                );
+              })}
+            </div>
+          </DashboardCard>
 
-        {/* Scheduled Reports */}
-        <DashboardCard title="Scheduled Reports">
-          <div className="space-y-3">
-            {scheduledReports.map((scheduled, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-patriot-darkNavy rounded-lg">
-                <div className="flex-1">
-                  <p className="text-desert-tan font-bold">{scheduled.report}</p>
-                  <div className="flex items-center gap-4 mt-1 text-sm text-desert-sand">
-                    <span>📧 {scheduled.recipients}</span>
-                    <span>📅 {scheduled.schedule}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    scheduled.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
-                  }`}>
-                    {scheduled.status.toUpperCase()}
-                  </span>
-                  <button className="text-desert-sand hover:text-phoenix-coral">Edit</button>
-                </div>
+          {/* Report Data Display */}
+          {reportData && (
+            <DashboardCard title={`${reportTemplates.find(r => r.id === activeReport)?.name || 'Report'} Results`}>
+              <div className="bg-patriot-darkNavy rounded-lg p-4 overflow-x-auto">
+                <pre className="text-desert-tan text-sm">
+                  {JSON.stringify(reportData, null, 2)}
+                </pre>
               </div>
-            ))}
+            </DashboardCard>
+          )}
+
+          {/* Export Options */}
+          <DashboardCard title="Export Formats">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <button
+                onClick={() => exportReport('pdf')}
+                className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors"
+              >
+                <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
+                <p className="text-desert-tan font-bold">PDF Report</p>
+                <p className="text-desert-sand text-sm">Professional branded reports</p>
+              </button>
+
+              <button
+                onClick={() => exportReport('csv')}
+                className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors"
+              >
+                <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
+                <p className="text-desert-tan font-bold">Excel/CSV</p>
+                <p className="text-desert-sand text-sm">Raw data for analysis</p>
+              </button>
+
+              <button
+                onClick={() => exportReport('json')}
+                className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors"
+              >
+                <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
+                <p className="text-desert-tan font-bold">JSON/API</p>
+                <p className="text-desert-sand text-sm">Programmatic access</p>
+              </button>
+            </div>
+          </DashboardCard>
+
+          {/* Contact Info */}
+          <div className="text-center text-desert-sand text-sm">
+            For custom reports, contact <a href="mailto:info@pdphx.com" className="text-phoenix-coral hover:underline">info@pdphx.com</a>
           </div>
-        </DashboardCard>
-
-        {/* Export Options */}
-        <DashboardCard title="Export Formats">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors">
-              <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
-              <p className="text-desert-tan font-bold">PDF Report</p>
-              <p className="text-desert-sand text-sm">Professional branded reports</p>
-            </div>
-
-            <div className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors">
-              <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
-              <p className="text-desert-tan font-bold">Excel/CSV</p>
-              <p className="text-desert-sand text-sm">Raw data for analysis</p>
-            </div>
-
-            <div className="p-4 bg-patriot-darkNavy border-2 border-phoenix-coral/30 rounded-lg text-center hover:border-phoenix-coral transition-colors">
-              <FileText className="w-12 h-12 text-phoenix-coral mx-auto mb-2" />
-              <p className="text-desert-tan font-bold">JSON/API</p>
-              <p className="text-desert-sand text-sm">Programmatic access</p>
-            </div>
-          </div>
-        </DashboardCard>
-      </div>
-    </DashboardLayout>
+        </div>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 }
