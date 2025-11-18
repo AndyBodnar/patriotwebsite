@@ -28,7 +28,7 @@ interface DriverFormData {
   licenseNumber: string;
   licenseExpiry: string;
   dotCertification: string;
-  status: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'ON_ROUTE' | 'OFF_SHIFT';
 }
 
 const emptyFormData: DriverFormData = {
@@ -144,7 +144,7 @@ export default function DriversPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value as any }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -154,9 +154,9 @@ export default function DriversPage() {
 
     try {
       if (editingDriver) {
-        await driverApi.update(editingDriver.id, formData);
+        await driverApi.update(editingDriver.id, formData as any);
       } else {
-        await driverApi.create(formData);
+        await driverApi.create(formData as any);
       }
       closeModal();
       fetchDrivers();
