@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import DashboardCard from '@/components/dashboard/DashboardCard';
@@ -311,7 +311,7 @@ function APIServiceCard({ service }: { service: APIServiceConfig }) {
   );
 }
 
-export default function SettingsPage() {
+function SettingsContent() {
   const searchParams = useSearchParams();
   const { connections, updateConnection } = useAPIConnections();
   const connectedCount = Object.values(connections).filter(c => c.connected).length;
@@ -467,5 +467,19 @@ export default function SettingsPage() {
         </DashboardCard>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-desert-sand">Loading settings...</div>
+        </div>
+      </DashboardLayout>
+    }>
+      <SettingsContent />
+    </Suspense>
   );
 }
