@@ -138,9 +138,9 @@ export default function CustomersPage() {
 
     try {
       if (editingCustomer) {
-        await customerApi.update(editingCustomer.id, formData);
+        await customerApi.update(editingCustomer.id, formData as any);
       } else {
-        await customerApi.create(formData);
+        await customerApi.create(formData as any);
       }
       closeModal();
       fetchCustomers();

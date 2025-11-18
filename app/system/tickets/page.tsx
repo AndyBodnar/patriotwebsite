@@ -157,9 +157,9 @@ export default function TicketsPage() {
 
     try {
       if (editingTicket) {
-        await ticketApi.update(editingTicket.id, formData);
+        await ticketApi.update(editingTicket.id, formData as any);
       } else {
-        await ticketApi.create(formData);
+        await ticketApi.create(formData as any);
       }
       closeModal();
       fetchTickets();

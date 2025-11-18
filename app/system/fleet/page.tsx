@@ -159,9 +159,9 @@ export default function FleetPage() {
       };
 
       if (editingVehicle) {
-        await fleetApi.update(editingVehicle.id, submitData);
+        await fleetApi.update(editingVehicle.id, submitData as any);
       } else {
-        await fleetApi.create(submitData);
+        await fleetApi.create(submitData as any);
       }
       closeModal();
       fetchVehicles();

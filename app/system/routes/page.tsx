@@ -137,9 +137,9 @@ export default function RoutesPage() {
 
     try {
       if (editingRoute) {
-        await routeApi.update(editingRoute.id, formData);
+        await routeApi.update(editingRoute.id, formData as any);
       } else {
-        await routeApi.create(formData);
+        await routeApi.create(formData as any);
       }
       closeModal();
       fetchRoutes();
