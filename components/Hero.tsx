@@ -93,7 +93,7 @@ export default function Hero() {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-2xl md:text-4xl text-desert-tan mb-8 font-light"
           >
-            Rising Above in <span className="bg-phoenix-gradient bg-clip-text text-transparent font-bold">Waste Management</span>
+            Rising Above in <span className="bg-phoenix-gradient bg-clip-text text-transparent font-bold">Disposal Services</span>
           </motion.p>
 
           <motion.p
