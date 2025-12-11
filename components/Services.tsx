@@ -138,7 +138,7 @@ export default function Services() {
             Our <span className="bg-phoenix-gradient bg-clip-text text-transparent">Services</span>
           </h2>
           <p className="text-xl text-desert-sand max-w-2xl mx-auto">
-            Comprehensive waste management solutions tailored to your needs
+            Comprehensive waste disposal solutions tailored to your needs
           </p>
         </motion.div>
 

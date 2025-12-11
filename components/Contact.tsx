@@ -106,7 +106,7 @@ export default function Contact() {
             Get Your <span className="bg-phoenix-gradient bg-clip-text text-transparent">Free Quote</span>
           </h2>
           <p className="text-xl text-desert-sand max-w-2xl mx-auto">
-            Ready to rise above your waste management challenges? Contact us today
+            Ready to rise above your waste disposal challenges? Contact us today
           </p>
         </motion.div>
 

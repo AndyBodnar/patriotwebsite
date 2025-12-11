@@ -17,6 +17,7 @@ export default function Footer() {
                   src="/logo.png"
                   alt="Patriot Disposal Phoenix"
                   fill
+                  sizes="48px"
                   className="object-contain"
                 />
               </div>
@@ -25,7 +26,7 @@ export default function Footer() {
               </h3>
             </div>
             <p className="text-desert-sand mb-4">
-              Rising above in waste management. Serving the Phoenix metro area with honor and dedication.
+              Rising above in waste disposal. Serving the Phoenix metro area with honor and dedication.
             </p>
             <div className="flex gap-4">
               <motion.a
@@ -112,13 +113,13 @@ export default function Footer() {
             </div>
           </div>
           <div className="text-center mt-6">
-            <p className="text-desert-sand/60 text-xs">
+            <p className="text-desert-sand text-base">
               Site designed and maintained by{' '}
               <a
                 href="https://azdevops.io"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-phoenix-coral hover:text-phoenix-orange transition-colors"
+                className="text-phoenix-coral hover:text-phoenix-orange transition-colors font-bold text-lg"
               >
                 DevCollective
               </a>

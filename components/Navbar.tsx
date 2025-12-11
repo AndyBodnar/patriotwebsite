@@ -5,6 +5,7 @@ import { Phone, Menu, X, Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from './LoginModal';
 
@@ -58,11 +59,12 @@ export default function Navbar() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
+          <Link href="/" className="flex items-center gap-3">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-3"
+            >
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -72,6 +74,7 @@ export default function Navbar() {
                 src="/logo.png"
                 alt="Patriot Disposal Phoenix"
                 fill
+                sizes="48px"
                 className="object-contain"
               />
             </motion.div>
@@ -80,6 +83,7 @@ export default function Navbar() {
               <span className="text-desert-tan text-sm ml-2">PHOENIX</span>
             </div>
           </motion.div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">

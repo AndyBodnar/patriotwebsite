@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone } from 'lucide-react';
+import { Phone, CreditCard, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -132,6 +132,59 @@ export default function Hero() {
               whileTap={{ scale: 0.95 }}
             >
               Get a Quote
+            </motion.a>
+
+            <motion.a
+              href="https://www.wam-server3.com/index-009150.htm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative px-10 py-5 bg-patriot-navy border-2 border-phoenix-gold text-phoenix-gold text-xl font-bold rounded-lg overflow-visible"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {/* Pulsating underglow */}
+              <motion.div
+                className="absolute inset-0 rounded-lg bg-phoenix-gold/30 blur-xl -z-10"
+                animate={{
+                  opacity: [0.4, 0.8, 0.4],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <span className="relative flex items-center gap-3">
+                <CreditCard className="w-6 h-6" />
+                Residential Payment Portal
+              </span>
+            </motion.a>
+
+            <motion.a
+              href="/schedule"
+              className="relative px-10 py-5 bg-patriot-navy border-2 border-phoenix-coral text-phoenix-coral text-xl font-bold rounded-lg overflow-visible"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {/* Pulsating underglow */}
+              <motion.div
+                className="absolute inset-0 rounded-lg bg-phoenix-coral/30 blur-xl -z-10"
+                animate={{
+                  opacity: [0.4, 0.8, 0.4],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
+              />
+              <span className="relative flex items-center gap-3">
+                <Calendar className="w-6 h-6" />
+                Schedule & Holidays
+              </span>
             </motion.a>
           </motion.div>
         </div>

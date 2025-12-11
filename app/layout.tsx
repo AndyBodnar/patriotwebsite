@@ -1,19 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Analytics from "@/components/Analytics";
 import VisitorTracker from "@/components/VisitorTracker";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { APIConnectionsProvider } from "@/contexts/APIConnectionsContext";
 
 export const metadata: Metadata = {
-  title: "Patriot Disposal Phoenix | Premium Waste Management Services",
+  title: "Patriot Disposal Phoenix | Premium waste disposal Services",
   description: "Professional waste disposal and dumpster rental services in Phoenix. Rising above the competition with reliable, efficient service.",
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -25,6 +18,13 @@ export const metadata: Metadata = {
     email: true,
     address: true,
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
   themeColor: '#1A2B4A',
 };
 
@@ -38,7 +38,6 @@ export default function RootLayout({
       <body className="antialiased">
         <AuthProvider>
           <APIConnectionsProvider>
-            <Analytics />
             <VisitorTracker />
             {children}
           </APIConnectionsProvider>

@@ -53,16 +53,19 @@ export default function About() {
             >
               {/* Logo */}
               <motion.div
-                className="relative w-[400px] h-[400px]"
+                className="relative w-[400px] h-[400px] bg-gradient-to-br from-patriot-darkNavy/50 to-patriot-blue/30 rounded-3xl p-8 backdrop-blur-sm border border-patriot-blue/30 shadow-xl shadow-black/20"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Image
-                  src="/logo.png"
-                  alt="Patriot Disposal Phoenix - Rising Above"
-                  fill
-                  className="object-contain drop-shadow-2xl"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/logo.png"
+                    alt="Patriot Disposal Phoenix - Rising Above"
+                    fill
+                    sizes="400px"
+                    className="object-contain drop-shadow-lg rounded-2xl"
+                  />
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -85,7 +88,7 @@ export default function About() {
             </h2>
 
             <p className="text-lg text-desert-sand mb-4 leading-relaxed">
-              At Patriot Disposal Phoenix, we believe in serving our community with honor, integrity, and dedication. Like the phoenix rising from the ashes, we turn waste management challenges into smooth, dependable solutions you do not have to think twice about. As a locally owned and operated company, we understand the unique needs of the Phoenix metro area, and we use that knowledge to deliver service you can rely on every time.
+              At Patriot Disposal Phoenix, we believe in serving our community with honor, integrity, and dedication. Like the phoenix rising from the ashes, we turn waste disposal challenges into smooth, dependable solutions you do not have to think twice about. As a locally owned and operated company, we understand the unique needs of the Phoenix metro area, and we use that knowledge to deliver service you can rely on every time.
             </p>
 
             <p className="text-lg text-desert-sand mb-4 leading-relaxed">

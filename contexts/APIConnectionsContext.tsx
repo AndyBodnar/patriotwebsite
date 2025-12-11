@@ -102,7 +102,8 @@ const initialState: APIConnectionsState = {
 
 const APIConnectionsContext = createContext<APIConnectionsContextType | undefined>(undefined);
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+// Use proxy in browser to avoid CORS, direct URL on server
+const API_BASE_URL = typeof window !== 'undefined' ? '/api/proxy' : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000');
 
 export function APIConnectionsProvider({ children }: { children: ReactNode }) {
   const [connections, setConnections] = useState<APIConnectionsState>(initialState);
@@ -111,7 +112,7 @@ export function APIConnectionsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchConnections = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/patriot/settings/connections`);
+        const response = await fetch(`${API_BASE_URL}/patriot/settings/connections`);
         if (response.ok) {
           const data = await response.json();
           if (data.success && data.data) {
@@ -153,7 +154,7 @@ export function APIConnectionsProvider({ children }: { children: ReactNode }) {
   const saveApiKey = async (id: string, apiKey: string): Promise<boolean> => {
     try {
       const conn = connections[id as keyof APIConnectionsState];
-      const response = await fetch(`${API_BASE_URL}/api/patriot/settings/api-keys`, {
+      const response = await fetch(`${API_BASE_URL}/patriot/settings/api-keys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -182,7 +183,7 @@ export function APIConnectionsProvider({ children }: { children: ReactNode }) {
 
   const disconnectService = async (id: string): Promise<boolean> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/patriot/settings/connections/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/patriot/settings/connections/${id}`, {
         method: 'DELETE',
       });
 
@@ -216,7 +217,7 @@ export function APIConnectionsProvider({ children }: { children: ReactNode }) {
 
   const testConnection = async (id: string): Promise<boolean> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/patriot/settings/test-connection/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/patriot/settings/test-connection/${id}`, {
         method: 'POST',
       });
       return response.ok;

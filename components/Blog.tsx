@@ -9,41 +9,36 @@ import Link from 'next/link';
 const blogPosts = [
   {
     id: 1,
-    title: 'How to Choose the Right Dumpster Size for Your Project',
-    excerpt: 'Selecting the correct dumpster size can save you time and money. Learn about our 10, 20, 30, and 40-yard options and which is best for your needs.',
-    date: '2024-11-15',
+    title: 'Holiday Waste Disposal: Keeping Phoenix Clean This Season',
+    excerpt: 'The holiday season brings extra waste from packaging, decorations, and gatherings. Here\'s how to manage it responsibly and keep your home clutter-free.',
+    date: 'December 8, 2025',
     readTime: '5 min read',
-    image: '/blog/dumpster-sizes.jpg',
-    slug: 'choose-right-dumpster-size'
+    image: '/blog/holiday-waste-optimized.jpg',
+    slug: 'holiday-waste-management-2025'
   },
   {
     id: 2,
-    title: 'Construction Waste Management Best Practices',
-    excerpt: 'Keep your job site clean and compliant with these essential waste management tips for construction projects in the Phoenix area.',
-    date: '2024-11-10',
+    title: 'Post-Thanksgiving Cleanup: Disposing of Large Items Before Christmas',
+    excerpt: 'Between Thanksgiving and Christmas is the perfect time to declutter. Learn how to properly dispose of furniture, electronics, and bulky items.',
+    date: 'December 2, 2025',
     readTime: '4 min read',
-    image: '/blog/construction-waste.jpg',
-    slug: 'construction-waste-management'
+    image: '/blog/post-thanksgiving-cleanup-clean.jpg',
+    slug: 'post-thanksgiving-cleanup-tips'
   },
   {
     id: 3,
-    title: 'The Benefits of Proper Recycling for Arizona Businesses',
-    excerpt: 'Discover how implementing a recycling program can reduce costs, improve sustainability, and enhance your company\'s reputation.',
-    date: '2024-11-05',
-    readTime: '6 min read',
-    image: '/blog/recycling-business.jpg',
-    slug: 'recycling-benefits-arizona'
+    title: '2025 Holiday Schedule: Patriot Disposal Service Dates',
+    excerpt: 'Plan ahead for the holidays! Check our updated service schedule for Thanksgiving, Christmas, and New Year\'s to ensure uninterrupted collection.',
+    date: 'November 25, 2025',
+    readTime: '3 min read',
+    image: null,
+    slug: 'holiday-schedule-2025'
   }
 ];
 
 export default function Blog() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  };
 
   return (
     <section id="blog" ref={ref} className="py-24 bg-patriot-navy relative overflow-hidden">
@@ -80,19 +75,31 @@ export default function Blog() {
             >
               <Link href={`/blog/${post.slug}`} className="block">
                 <div className="bg-patriot-darkNavy border-2 border-patriot-blue hover:border-phoenix-coral transition-all duration-300 rounded-xl overflow-hidden h-full">
-                  {/* Image placeholder */}
-                  <div className="relative h-48 bg-patriot-blue overflow-hidden">
-                    <div className="absolute inset-0 bg-phoenix-gradient opacity-20 group-hover:opacity-30 transition-opacity" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-6xl opacity-30">📰</span>
-                    </div>
+                  {/* Image */}
+                  <div className="relative h-56 bg-patriot-blue overflow-hidden">
+                    {post.image ? (
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-phoenix-gradient opacity-20 group-hover:opacity-30 transition-opacity" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-6xl opacity-30">📰</span>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="p-6">
                     <div className="flex items-center gap-4 text-sm text-desert-sand mb-3">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {formatDate(post.date)}
+                        {post.date}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
