@@ -31,7 +31,7 @@ const blogPosts = [
     excerpt: 'Plan ahead for the holidays! Check our updated service schedule for Thanksgiving, Christmas, and New Year\'s to ensure uninterrupted collection.',
     date: 'November 25, 2025',
     readTime: '3 min read',
-    image: null,
+    image: '/blog/holiday-schedule.png',
     slug: 'holiday-schedule-2025'
   }
 ];
