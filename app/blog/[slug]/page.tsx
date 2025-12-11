@@ -407,11 +407,7 @@ export default function BlogPostPage() {
               Back to Blog
             </Link>
 
-            <span className="inline-block px-3 py-1 bg-phoenix-coral text-white text-sm font-bold rounded-full mb-4">
-              {post.category}
-            </span>
-
-            <h1 className="text-4xl md:text-5xl font-bold text-desert-tan mb-6">
+                        <h1 className="text-4xl md:text-5xl font-bold text-desert-tan mb-6">
               {post.title}
             </h1>
 
@@ -456,6 +452,9 @@ export default function BlogPostPage() {
                   className="object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-patriot-darkNavy/40 via-transparent to-transparent" />
+                <span className="absolute top-4 right-4 px-3 py-1 bg-phoenix-coral text-white text-sm font-bold rounded-full shadow-lg">
+                  {post.category}
+                </span>
               </div>
             </motion.div>
           )}
