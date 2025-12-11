@@ -399,13 +399,18 @@ export default function BlogPostPage() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto"
           >
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-desert-sand hover:text-phoenix-coral transition-colors mb-6"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Blog
-            </Link>
+            <div className="flex items-center justify-between mb-6">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 text-desert-sand hover:text-phoenix-coral transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Blog
+              </Link>
+              <span className="px-3 py-1 bg-phoenix-coral text-white text-sm font-bold rounded-full">
+                {post.category}
+              </span>
+            </div>
 
                         <h1 className="text-4xl md:text-5xl font-bold text-desert-tan mb-6">
               {post.title}
@@ -452,10 +457,7 @@ export default function BlogPostPage() {
                   className="object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-patriot-darkNavy/40 via-transparent to-transparent" />
-                <span className="absolute top-4 right-4 px-3 py-1 bg-phoenix-coral text-white text-sm font-bold rounded-full shadow-lg">
-                  {post.category}
-                </span>
-              </div>
+                              </div>
             </motion.div>
           )}
 
