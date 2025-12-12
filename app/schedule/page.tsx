@@ -6,20 +6,36 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 // Holiday data - edit this to update holidays
+// 2025: Only Christmas closed
+// 2026: Thanksgiving and Christmas closed
 const holidays2025 = [
-  { date: '2025-01-01', name: "New Year's Day", closed: true },
+  { date: '2025-01-01', name: "New Year's Day", closed: false },
   { date: '2025-01-20', name: 'Martin Luther King Jr. Day', closed: false },
   { date: '2025-02-17', name: "Presidents' Day", closed: false },
-  { date: '2025-05-26', name: 'Memorial Day', closed: true },
-  { date: '2025-07-04', name: 'Independence Day', closed: true },
-  { date: '2025-09-01', name: 'Labor Day', closed: true },
+  { date: '2025-05-26', name: 'Memorial Day', closed: false },
+  { date: '2025-07-04', name: 'Independence Day', closed: false },
+  { date: '2025-09-01', name: 'Labor Day', closed: false },
   { date: '2025-10-13', name: 'Columbus Day', closed: false },
   { date: '2025-11-11', name: 'Veterans Day', closed: false },
-  { date: '2025-11-27', name: 'Thanksgiving Day', closed: true },
-  { date: '2025-11-28', name: 'Day After Thanksgiving', closed: true },
+  { date: '2025-11-27', name: 'Thanksgiving Day', closed: false },
   { date: '2025-12-25', name: 'Christmas Day', closed: true },
-  { date: '2025-12-26', name: 'Day After Christmas', closed: false },
 ];
+
+const holidays2026 = [
+  { date: '2026-01-01', name: "New Year's Day", closed: false },
+  { date: '2026-01-19', name: 'Martin Luther King Jr. Day', closed: false },
+  { date: '2026-02-16', name: "Presidents' Day", closed: false },
+  { date: '2026-05-25', name: 'Memorial Day', closed: false },
+  { date: '2026-07-04', name: 'Independence Day', closed: false },
+  { date: '2026-09-07', name: 'Labor Day', closed: false },
+  { date: '2026-10-12', name: 'Columbus Day', closed: false },
+  { date: '2026-11-11', name: 'Veterans Day', closed: false },
+  { date: '2026-11-26', name: 'Thanksgiving Day', closed: true },
+  { date: '2026-12-25', name: 'Christmas Day', closed: true },
+];
+
+// Combined holidays for both years
+const allHolidays = [...holidays2025, ...holidays2026];
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -43,7 +59,7 @@ export default function SchedulePage() {
 
   const isHoliday = (year: number, month: number, day: number) => {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return holidays2025.find(h => h.date === dateStr);
+    return allHolidays.find(h => h.date === dateStr);
   };
 
   const isToday = (year: number, month: number, day: number) => {
@@ -190,10 +206,10 @@ export default function SchedulePage() {
         >
           <h3 className="text-2xl font-bold text-desert-tan mb-4 flex items-center gap-2">
             <AlertTriangle className="w-6 h-6 text-phoenix-coral" />
-            2025 Holiday Schedule
+            {currentYear} Holiday Schedule
           </h3>
           <div className="grid gap-3">
-            {holidays2025.map((holiday, index) => {
+            {(currentYear === 2025 ? holidays2025 : currentYear === 2026 ? holidays2026 : holidays2025).map((holiday, index) => {
               const date = new Date(holiday.date + 'T00:00:00');
               return (
                 <motion.div
