@@ -113,14 +113,12 @@ const blogPosts: Record<string, any> = {
     content: `
       <p>Planning ahead for the holidays? Here's everything you need to know about Patriot Disposal Phoenix's service schedule during the 2025 holiday season.</p>
 
-      <h2>Holiday Closures</h2>
-      <p>Our office will be closed on the following days:</p>
+      <h2>2025 Holiday Schedule</h2>
+      <p>Great news! We are working through most holidays this year to serve you better. Our only closure:</p>
       <ul>
-        <li><strong>Thanksgiving Day</strong> - Thursday, November 27, 2025</li>
-        <li><strong>Day After Thanksgiving</strong> - Friday, November 28, 2025</li>
-        <li><strong>Christmas Day</strong> - Thursday, December 25, 2025</li>
-        <li><strong>New Year's Day</strong> - Thursday, January 1, 2026</li>
+        <li><strong>Christmas Day</strong> - Thursday, December 25, 2025 - CLOSED</li>
       </ul>
+      <p>We will be OPEN on Thanksgiving, New Years Day, and all other holidays in 2025!</p>
 
       <h2>Adjusted Pickup Schedule</h2>
       <p>During holiday weeks, pickup schedules may be adjusted:</p>
